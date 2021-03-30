@@ -1,7 +1,7 @@
 package behaviours;
 
 import interfaces.StudentMessageContents;
-import interfaces.enums.ConversationTypes;
+import interfaces.enums.ConversationIDs;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
@@ -11,7 +11,6 @@ import jade.lang.acl.UnreadableException;
 import utils.Utils;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class RequestThesisProposals extends Behaviour {
     private HashMap<String, String> receivedProposals = new HashMap<>();
@@ -41,13 +40,13 @@ public class RequestThesisProposals extends Behaviour {
                     }
                     message.setContent(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS);
                     message.setPerformative(ACLMessage.REQUEST);
-                    message.setConversationId(ConversationTypes.ASK_PROPOSALS.name());
+                    message.setConversationId(ConversationIDs.STUDENT1_ASK_PROPOSALS.name());
                     message.setReplyWith("message"+System.currentTimeMillis());
                     myAgent.send(message);
                     listReceivedCount = allSupervisors.length;
                     System.out.println("\n[INFO] "+myAgent.getLocalName() +" sent request to supervisors " +message.getContent());
 
-                    messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationTypes.ASK_PROPOSALS.name()),
+                    messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.STUDENT1_ASK_PROPOSALS.name()),
                             MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
                     step = 1;
                 } else {
@@ -74,6 +73,7 @@ public class RequestThesisProposals extends Behaviour {
                         System.out.println("\n[INFO] Student1 chose the thesis with the title: "+chosenThesisTitle);
                         ACLMessage reply = receivedMessage.createReply();
                         reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+                        reply.setConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.name());
                         reply.setContent(chosenThesisTitle);
 
                         System.out.println("\n[INFO] Student1 sent the chosen thesis title to its supervisor.");

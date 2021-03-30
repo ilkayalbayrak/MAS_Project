@@ -1,5 +1,6 @@
 package agents;
 
+import behaviours.FindExternalThesisProposals;
 import behaviours.RequestThesisProposals;
 import jade.core.AID;
 import jade.core.Agent;
@@ -38,7 +39,30 @@ public class Student1 extends Agent {
         Utils.registerService(this, serviceTypes, serviceNames);
 
         // todo: examine the proposals
-        addBehaviour(new RequestThesisProposals(this, thesisType));
+        if(thesisType != null){
+            switch (thesisType){
+                case "EXTERNAL":
+                    System.out.println("[INFO] Agent"+ this.getLocalName() + " chose the EXTERNAL TH path ");
+                    // todo: contact company or research center for their possible TH material projects
+                    // then ask Thesis committee if that is acceptable
+                    addBehaviour(new FindExternalThesisProposals(this));
+                    break;
+                case "AD_HOC":
+                    System.out.println("[INFO] Agent"+ this.getLocalName() + " chose the AD_HOC TH path ");
+                    //
+                    break;
+                case "PROPOSED":
+                    System.out.println("[INFO] Agent"+ this.getLocalName() + " chose the PROPOSED TH path ");
+                    addBehaviour(new RequestThesisProposals(this, thesisType));
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value for thesisType: " + thesisType);
+            }
+        } else {
+            System.out.println("\n[ERROR] thesisType parameter of agent "+this.getLocalName()+" is null");
+        }
+
+
 
         // todo: search supervisors in yellow pages
 
