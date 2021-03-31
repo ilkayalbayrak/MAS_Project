@@ -26,19 +26,23 @@ public class OfferThesisProposals extends CyclicBehaviour {
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
         if (receivedMessage != null) {
-            System.out.println("[INFO] "+myAgent.getLocalName() +" received message from "+receivedMessage.getSender().getName());
+            System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received message from "+receivedMessage.getSender().getName());
             ACLMessage reply = receivedMessage.createReply();
+
+            // todo: remove this if cond. same reason for the todo below -->
             if (receivedMessage.getPerformative() == ACLMessage.REQUEST) {
+
+                //todo: this if cond. can be removed because receive the message by matching the Message Content
                 if (receivedMessage.getContent().equals(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS)) {
                     reply.setPerformative(ACLMessage.PROPOSE);
 
                     try {
                         reply.setContentObject((Serializable) proposalList);
                     } catch (IOException e) {
-                        System.out.println("\n[ERROR] Failed to serialize the proposalList object.");
+                        System.out.println("\n[ERROR] Agent "+ myAgent.getLocalName() +" Failed to serialize its proposalList object.");
                         e.printStackTrace();
                     }
-                    System.out.println("\n[INFO] " + myAgent.getLocalName() + " says: I am sending the list of thesis proposals to AGENT: {" + receivedMessage.getSender().getLocalName() + "}.\nProposals: "+reply.getContent() +"\n");
+                    System.out.println("\n[INFO] Agent " + myAgent.getLocalName() + " has sent the list of thesis proposals to AGENT: {" + receivedMessage.getSender().getLocalName() + "}.\nProposals: "+reply.getContent() +"\n");
                     myAgent.send(reply);
                 }
             }

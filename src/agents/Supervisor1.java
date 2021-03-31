@@ -69,9 +69,6 @@ public class Supervisor1 extends Agent {
 //        }
 //    }
 
-    private static void fillProposalList(){
-
-    }
 
     public void setProposalList(String title, String availability){
         this.proposalList.put(title, availability);

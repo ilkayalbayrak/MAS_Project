@@ -40,13 +40,13 @@ public class RequestThesisProposals extends Behaviour {
                     }
                     message.setContent(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS);
                     message.setPerformative(ACLMessage.REQUEST);
-                    message.setConversationId(ConversationIDs.STUDENT1_ASK_PROPOSALS.name());
+                    message.setConversationId(ConversationIDs.ASK_PROPOSALS.name());
                     message.setReplyWith("message"+System.currentTimeMillis());
                     myAgent.send(message);
                     listReceivedCount = allSupervisors.length;
                     System.out.println("\n[INFO] "+myAgent.getLocalName() +" sent request to supervisors " +message.getContent());
 
-                    messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.STUDENT1_ASK_PROPOSALS.name()),
+                    messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.ASK_PROPOSALS.name()),
                             MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
                     step = 1;
                 } else {
@@ -70,13 +70,13 @@ public class RequestThesisProposals extends Behaviour {
 
                         // randomly pick a thesis for now
                         chosenThesisTitle = Utils.pickRandomThesis(receivedProposals);
-                        System.out.println("\n[INFO] Student1 chose the thesis with the title: "+chosenThesisTitle);
+                        System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the thesis with the title: "+chosenThesisTitle);
                         ACLMessage reply = receivedMessage.createReply();
                         reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                         reply.setConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.name());
                         reply.setContent(chosenThesisTitle);
 
-                        System.out.println("\n[INFO] Student1 sent the chosen thesis title to its supervisor.");
+                        System.out.println("\n[INFO] Agent " +myAgent.getLocalName()+ " sent the chosen thesis title to its supervisor.");
                         myAgent.send(reply);
                         step = 2;
                     }

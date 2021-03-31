@@ -1,5 +1,8 @@
 package utils;
 
+import behaviours.ChooseThesisProposal;
+import behaviours.RequestExternalThesisProposals;
+import behaviours.RequestThesisProposals;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -78,6 +81,41 @@ public class Utils {
         }
         System.out.println("\n[ERROR] pickRandomThesis list is empty...");
         return null;
+
+    }
+
+    public static String getThesisTypeArgument(Agent agent){
+        String thesisType = null;
+        Object[] args = agent.getArguments();
+        if (args != null && args.length >0){
+            thesisType = (String) args[0];
+        }
+        return thesisType;
+    }
+
+    public static void executeChosenThesisPath(Agent agent, String thesisType){
+        if (agent != null && thesisType != null){
+            switch (thesisType){
+                case "EXTERNAL":
+                    System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the EXTERNAL TH path ");
+                    // then ask Thesis committee if that is acceptable
+                    agent.addBehaviour(new RequestExternalThesisProposals(agent));
+                    agent.addBehaviour(new ChooseThesisProposal(agent));
+                    break;
+                case "AD_HOC":
+                    System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the AD_HOC TH path ");
+                    //
+                    break;
+                case "PROPOSED":
+                    System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the PROPOSED TH path ");
+                    agent.addBehaviour(new RequestThesisProposals(agent, thesisType));
+                    break;
+                default:
+                    throw new IllegalStateException("Unexpected value for thesisType: " + thesisType);
+            }
+        }else {
+            System.out.println("\n[ERROR] thesisType parameter of agent "+agent.getLocalName()+" is null");
+        }
 
     }
 

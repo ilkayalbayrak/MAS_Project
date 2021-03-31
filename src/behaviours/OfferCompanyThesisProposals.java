@@ -1,12 +1,16 @@
 package behaviours;
 
+import interfaces.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import utils.Utils;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -21,15 +25,35 @@ public class OfferCompanyThesisProposals extends CyclicBehaviour {
 
     @Override
     public void action() {
-        AID[] studentAgents = Utils.getAgentList(myAgent,"student");
-        if (studentAgents != null && studentAgents.length>0){
-            for(AID student: studentAgents){
-                studentConversationIDs.add(ConversationIDs.STUDENT1_ASK_COMPANY_PROPOSALS.name() + student.getLocalName());
+//        AID[] studentAgents = Utils.getAgentList(myAgent,"student");
+//        if (studentAgents != null && studentAgents.length>0){
+//            for(AID student: studentAgents){
+//                studentConversationIDs.add(ConversationIDs.ASK_COMPANY_PROPOSALS.name() + student.getLocalName());
+//            }
+//        }
+
+        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchContent(StudentMessageContents.REQUEST_COMPANY_THESIS_PROPOSALS),
+                MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
+        ACLMessage receivedMessage = myAgent.receive(messageTemplate);
+
+        if (receivedMessage != null) {
+            System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received message from "+receivedMessage.getSender().getName());
+            ACLMessage reply = receivedMessage.createReply();
+            reply.setPerformative(ACLMessage.PROPOSE);
+
+            try {
+                reply.setContentObject((Serializable) companyThesisList);
+            } catch (IOException e) {
+                System.out.println("\n[ERROR] Agent "+ myAgent.getLocalName() +" Failed to serialize its proposalList object.");
+                e.printStackTrace();
             }
+            System.out.println("\n[INFO] Agent " + myAgent.getLocalName() + " has sent the list of thesis proposals to AGENT: {" + receivedMessage.getSender().getLocalName() + "}.\nProposals: "+reply.getContent() +"\n");
+            myAgent.send(reply);
+
+        }else {
+            block();
         }
 
-//        MessageTemplate messageTemplate = MessageTemplate.MatchConversationId(studentConversationIDs.stream()
-//                                                                                .filter(i -> i ==  ))
-
     }
+
 }

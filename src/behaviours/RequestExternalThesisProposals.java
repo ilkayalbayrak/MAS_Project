@@ -1,5 +1,6 @@
 package behaviours;
 
+import interfaces.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
 import jade.core.AID;
 import jade.core.Agent;
@@ -9,9 +10,8 @@ import utils.Utils;
 
 import java.util.Map;
 
-public class FindExternalThesisProposals extends OneShotBehaviour {
-    private Map<String,String> companyProposalList;
-    public FindExternalThesisProposals(Agent agent) {
+public class RequestExternalThesisProposals extends OneShotBehaviour {
+    public RequestExternalThesisProposals(Agent agent) {
         super(agent);
     }
 
@@ -22,13 +22,13 @@ public class FindExternalThesisProposals extends OneShotBehaviour {
             ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
             for(AID company: companyOrResearchCenters){
                 message.addReceiver(company);
-                System.out.println("\n[INFO] Company or Research Center's name: "+company.getLocalName());
+                System.out.println("\n[INFO] Company name who offers thesis proposals: "+company.getLocalName());
             }
-            message.setContent("[INFO] " + myAgent.getLocalName() + " wants to learn about possible thesis opportunities in your company.");
+            message.setContent(StudentMessageContents.REQUEST_COMPANY_THESIS_PROPOSALS);
             message.setPerformative(ACLMessage.REQUEST);
-            message.setConversationId(ConversationIDs.STUDENT1_ASK_COMPANY_PROPOSALS.name()+myAgent.getLocalName());
+            message.setConversationId(ConversationIDs.ASK_COMPANY_PROPOSALS.name()+myAgent.getLocalName());
+            System.out.println("[INFO] Agent "+myAgent.getLocalName()+" sent a request to the companies to see their thesis opportunities.");
             myAgent.send(message);
-            System.out.println("[INFO] "+myAgent.getLocalName()+" sent a request to the companies to see their thesis opportunities.");
         }
 
     }
