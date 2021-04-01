@@ -20,10 +20,10 @@ public class ResearchCenterOrCompany extends Agent {
         System.out.println("Hello ResearchCenterOrCompany " + getAID().getName() + " is ready.");
         //manually set the thesis
         companyThesisList.put("CompanyThesis1", "NLP");
-        companyThesisList.put("CompanyThesis2", "NLP");
-        companyThesisList.put("CompanyThesis3", "MAS");
-        companyThesisList.put("CompanyThesis4", "ML");
-        companyThesisList.put("CompanyThesis5", "SPR");
+        companyThesisList.put("CompanyThesis2", "MAS");
+        companyThesisList.put("CompanyThesis3", "ML");
+        companyThesisList.put("CompanyThesis4", "SPR");
+        companyThesisList.put("CompanyThesis5", "LSC");
 
         // Register agent to yellow pages
         String[] serviceTypes = {"research_center", "company"};
@@ -31,6 +31,7 @@ public class ResearchCenterOrCompany extends Agent {
         Utils.registerService(this, serviceTypes, serviceNames);
 
         addBehaviour(new OfferCompanyThesisProposals(this, companyThesisList));
+        addBehaviour(new HandleThesisAcceptances());
     }
 
     @Override
@@ -57,23 +58,12 @@ public class ResearchCenterOrCompany extends Agent {
         public void action() {
             MessageTemplate messageTemplate = MessageTemplate.MatchPerformative(ACLMessage.ACCEPT_PROPOSAL);
             ACLMessage receivedMessage = myAgent.receive(messageTemplate);
-            if (receivedMessage ==null){
-                System.out.println("[INFO] Received message is null");
-            }
             if (receivedMessage != null){
 
-
                     String chosenThesisTitle = receivedMessage.getContent();
-                    System.out.println("\n[INFO] Proposal list before removaal\n");
-                    for(String title: companyThesisList.keySet()){
-                        System.out.println("Thesis title: "+title);
-                    }
                     removeProposal(chosenThesisTitle);
-                    System.out.println("\n[INFO] Proposal list after removaal\n");
-                    for(String title: companyThesisList.keySet()){
-                        System.out.println("Thesis title: "+title);
-                    }
-
+                    System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesisTitle+
+                        " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
 
             }else {
                 block();

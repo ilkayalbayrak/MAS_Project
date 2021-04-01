@@ -1,6 +1,7 @@
 package behaviours;
 
 import interfaces.enums.ConversationIDs;
+import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
@@ -9,12 +10,14 @@ import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import utils.Utils;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChooseThesisProposal extends CyclicBehaviour {
+public class ChooseCompanyThesisProposal extends CyclicBehaviour {
     private HashMap<String,String> receivedProposals = new HashMap<>();
-    public ChooseThesisProposal(Agent agent) {
+    public ChooseCompanyThesisProposal(Agent agent) {
     }
 
     @Override
@@ -42,9 +45,26 @@ public class ChooseThesisProposal extends CyclicBehaviour {
             reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
             reply.setContent(chosenThesisTitle);
             reply.addReplyTo(receivedMessage.getSender());
+//            receivedProposals.get(chosenThesisTitle);
 
             System.out.println("\n[INFO] Agent " +myAgent.getLocalName()+ " sent the chosen thesis title to its company.");
             myAgent.send(reply);
+
+            // todo: inform the thesis committee about chosen external thesis
+            String[] chosenThesisInfo = {chosenThesisTitle, receivedProposals.get(chosenThesisTitle)};
+            AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
+            if (thesisCommittee != null && thesisCommittee.length > 0){
+                ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                message.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE.name());
+                message.addReceiver(thesisCommittee[0]);
+                try {
+                    message.setContentObject(chosenThesisInfo);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                myAgent.send(message);
+
+            }
 
 
         } else {

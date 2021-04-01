@@ -1,6 +1,6 @@
 package utils;
 
-import behaviours.ChooseThesisProposal;
+import behaviours.ChooseCompanyThesisProposal;
 import behaviours.RequestExternalThesisProposals;
 import behaviours.RequestThesisProposals;
 import jade.core.AID;
@@ -100,7 +100,7 @@ public class Utils {
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the EXTERNAL TH path ");
                     // then ask Thesis committee if that is acceptable
                     agent.addBehaviour(new RequestExternalThesisProposals(agent));
-                    agent.addBehaviour(new ChooseThesisProposal(agent));
+                    agent.addBehaviour(new ChooseCompanyThesisProposal(agent));
                     break;
                 case "AD_HOC":
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the AD_HOC TH path ");

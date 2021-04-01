@@ -98,15 +98,17 @@ public class Supervisor1 extends Agent {
                 if(receivedMessage.getPerformative() == ACLMessage.ACCEPT_PROPOSAL){
 
                     String chosenThesisTitle = receivedMessage.getContent();
-                    System.out.println("\n[INFO] Proposal list before removaal\n");
-                    for(String title: proposalList.keySet()){
-                        System.out.println("\nThesis title: "+title);
-                    }
+//                    System.out.println("\n[INFO] Proposal list before removaal\n");
+//                    for(String title: proposalList.keySet()){
+//                        System.out.println("Thesis title: "+title);
+//                    }
                     removeProposal(chosenThesisTitle);
-                    System.out.println("\n[INFO] Proposal list after removaal\n");
-                    for(String title: proposalList.keySet()){
-                        System.out.println("\nThesis title: "+title);
-                    }
+                    System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesisTitle+
+                            " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
+//                    System.out.println("\n[INFO] Proposal list after removaal\n");
+//                    for(String title: proposalList.keySet()){
+//                        System.out.println("Thesis title: "+title);
+//                    }
                 } else if(receivedMessage.getPerformative() == ACLMessage.REJECT_PROPOSAL){
                     System.out.println("\n[INFO] "+receivedMessage.getSender().getLocalName()+
                             " wants to reject the proposal.");
