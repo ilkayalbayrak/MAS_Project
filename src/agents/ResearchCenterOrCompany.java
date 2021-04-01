@@ -20,10 +20,10 @@ public class ResearchCenterOrCompany extends Agent {
         System.out.println("Hello ResearchCenterOrCompany " + getAID().getName() + " is ready.");
         //manually set the thesis
         companyThesisList.put("CompanyThesis1", "NLP");
-        companyThesisList.put("CompanyThesis2", "MAS");
-        companyThesisList.put("CompanyThesis3", "ML");
-        companyThesisList.put("CompanyThesis4", "SPR");
-        companyThesisList.put("CompanyThesis5", "LSC");
+        companyThesisList.put("CompanyThesis2", "NLP");
+        companyThesisList.put("CompanyThesis3", "NLP");
+        companyThesisList.put("CompanyThesis4", "NLP");
+        companyThesisList.put("CompanyThesis5", "NLP");
 
         // Register agent to yellow pages
         String[] serviceTypes = {"research_center", "company"};

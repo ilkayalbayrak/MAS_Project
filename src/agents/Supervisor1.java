@@ -14,19 +14,6 @@ import java.util.Map;
 
 public class Supervisor1 extends Agent {
     Map<String, String> proposalList = new HashMap<>();
-//    private static Supervisor1 INSTANCE;
-//
-//    private Supervisor1(){
-//
-//    }
-////     Singleton class pattern
-////     final static could be used here
-//    public static Supervisor1 getInstance() {
-//        if(INSTANCE == null){
-//            INSTANCE = new Supervisor1();
-//        }
-//        return INSTANCE;
-//    }
 
 
     protected void setup(){
@@ -38,36 +25,14 @@ public class Supervisor1 extends Agent {
         proposalList.put("Thesis5", "available");
 
         // Register agent to yellow pages
-        String[] serviceTypes = {"supervisor"};
-        String[] serviceNames = {"supervisor"};
+        String[] serviceTypes = {"supervisor", "NLP"};
+        String[] serviceNames = {"professor","professor_NLP"};
         Utils.registerService(this, serviceTypes, serviceNames);
 
         addBehaviour(new OfferThesisProposals(this, proposalList));
         addBehaviour(new HandleThesisAcceptances());
 //        addBehaviour(new ListenStudents(this));
     }
-
-//    class ListenStudents extends CyclicBehaviour{
-//        public ListenStudents(Agent agent){
-//            super(agent);
-//        }
-//        @Override
-//        public void action() {
-//            ACLMessage msg = myAgent.receive();
-//            if (msg != null){
-//                // Process received message
-//                String msgContent = msg.getContent();
-//                ACLMessage reply = msg.createReply();
-//                reply.setPerformative(ACLMessage.PROPOSE);
-//                reply.setContent("These are my proposals: X,c,f,g,h,y,r,d,w,r,g,r...");
-//                myAgent.send(reply);
-////                System.out.println(reply);
-//            } else {
-//                // if there is no msg block the behaviour
-//                block();
-//            }
-//        }
-//    }
 
 
     public void setProposalList(String title, String availability){
@@ -98,17 +63,9 @@ public class Supervisor1 extends Agent {
                 if(receivedMessage.getPerformative() == ACLMessage.ACCEPT_PROPOSAL){
 
                     String chosenThesisTitle = receivedMessage.getContent();
-//                    System.out.println("\n[INFO] Proposal list before removaal\n");
-//                    for(String title: proposalList.keySet()){
-//                        System.out.println("Thesis title: "+title);
-//                    }
                     removeProposal(chosenThesisTitle);
                     System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesisTitle+
                             " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
-//                    System.out.println("\n[INFO] Proposal list after removaal\n");
-//                    for(String title: proposalList.keySet()){
-//                        System.out.println("Thesis title: "+title);
-//                    }
                 } else if(receivedMessage.getPerformative() == ACLMessage.REJECT_PROPOSAL){
                     System.out.println("\n[INFO] "+receivedMessage.getSender().getLocalName()+
                             " wants to reject the proposal.");
