@@ -1,0 +1,10 @@
+package interfaces.enums;
+
+public enum ThesisMainSubjects {
+    MACHINE_LEARNING,
+    NATURAL_LANGUAGE_PROPOSAL,
+    MULTI_AGENT_SYSTEMS,
+    COMPUTER_VISION,
+    SPEECH_PROCESSING_AND_RECOGNITION,
+    LARGE_SCALE_COMPUTING
+}
