@@ -1,6 +1,7 @@
 package utils;
 
 import behaviours.ChooseCompanyThesisProposal;
+import behaviours.ContactSupervisor;
 import behaviours.RequestExternalThesisProposals;
 import behaviours.RequestThesisProposals;
 import jade.core.AID;
@@ -11,6 +12,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 public class Utils {
@@ -93,7 +95,7 @@ public class Utils {
         return thesisType;
     }
 
-    public static void executeChosenThesisPath(Agent agent, String thesisType){
+    public static void executeChosenThesisPath(Agent agent, String thesisType, String researchInterest, Thesis adhocThesis){
         if (agent != null && thesisType != null){
             switch (thesisType){
                 case "EXTERNAL":
@@ -104,7 +106,15 @@ public class Utils {
                     break;
                 case "AD_HOC":
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the AD_HOC TH path ");
-                    //
+                    //choose supervisor and contact supervisor about a possible thesis
+                    // Student offers its own idea for a thesis to supervisor
+                    // student and supervisor come to an agreement whether the thesis is OK or not
+                    if (adhocThesis !=null){
+                        agent.addBehaviour(new ContactSupervisor(agent, researchInterest, adhocThesis));
+                    } else {
+                        System.out.println("[ERROR] Agent "+agent.getLocalName()+": There are no presented AD HOC thesis proposals.");
+                    }
+
                     break;
                 case "PROPOSED":
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the PROPOSED TH path ");
@@ -114,6 +124,7 @@ public class Utils {
                     throw new IllegalStateException("Unexpected value for thesisType: " + thesisType);
             }
         }else {
+            assert agent != null;
             System.out.println("\n[ERROR] thesisType parameter of agent "+agent.getLocalName()+" is null");
         }
 

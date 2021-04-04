@@ -11,19 +11,23 @@ public class Thesis implements Serializable {
     private String thesisTitle;
     private String thesisSubject;
     private String thesisInfo;
+
+    //set a value between 30-100
     private int academicWorth;
     private AID thesisStudent;
     private AID thesisSupervisor;
 
-    public Thesis(String thesisType, String thesisTitle, String thesisSubject, String thesisInfo, int academicWorth, AID thesisStudent, AID thesisSupervisor) {
-        this.thesisType = thesisType;
-        this.thesisTitle = thesisTitle;
-        this.thesisSubject = thesisSubject;
-        this.thesisInfo = thesisInfo;
-        this.academicWorth = academicWorth;
-        this.thesisStudent = thesisStudent;
-        this.thesisSupervisor = thesisSupervisor;
-    }
+//    public Thesis(String thesisType, String thesisTitle, String thesisSubject, String thesisInfo, int academicWorth, AID thesisStudent, AID thesisSupervisor) {
+//        this.thesisType = thesisType;
+//        this.thesisTitle = thesisTitle;
+//        this.thesisSubject = thesisSubject;
+//        this.thesisInfo = thesisInfo;
+//        this.academicWorth = academicWorth;
+//        this.thesisStudent = thesisStudent;
+//        this.thesisSupervisor = thesisSupervisor;
+//    }
+
+
 
     public String getThesisType() {
         return thesisType;

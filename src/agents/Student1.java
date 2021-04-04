@@ -7,7 +7,7 @@ import utils.Utils;
 public class Student1 extends Agent {
     private AID[] supervisors;
     private String thesisType; // which kind of thesis the student will opt for: external, ad-hoc, proposed
-
+    private String researchInterest;
     protected void setup(){
         System.out.println("Hello Student1 " + getAID().getName() + " is ready.");
 
@@ -30,7 +30,11 @@ public class Student1 extends Agent {
 //            System.out.println(getAID().getName() +": choose the thesis-type: "+thesisType);
 //        }
 
-        thesisType = Utils.getThesisTypeArgument(this);
+        Object[] args = getArguments();
+        if (args != null && args.length >0){
+            thesisType = (String) args[0];
+            researchInterest = (String) args[1];
+        }
 
         // todo: register the agent to the yellow pages
         // Register agent to yellow pages
@@ -61,14 +65,10 @@ public class Student1 extends Agent {
 //        } else {
 //            System.out.println("\n[ERROR] thesisType parameter of agent "+this.getLocalName()+" is null");
 //        }
-        Utils.executeChosenThesisPath(this, thesisType);
-
-
+        Utils.executeChosenThesisPath(this, thesisType,researchInterest,null);
 
         // todo: search supervisors in yellow pages
 
-
-//        addBehaviour(new StudentBehaviour(this));
     }
 
     @Override

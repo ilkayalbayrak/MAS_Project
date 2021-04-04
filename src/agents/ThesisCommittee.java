@@ -2,9 +2,11 @@ package agents;
 
 import behaviours.EvaluateExternalThesisProposals;
 import jade.core.Agent;
+import utils.Thesis;
 import utils.Utils;
 
 public class ThesisCommittee extends Agent {
+    private Thesis[] onGoingTheses;
     protected void setup(){
         System.out.println("Hello Thesis Committee " + getAID().getName() + " is ready.");
         String[]  serviceNames = {"thesis_committee"};
