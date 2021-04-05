@@ -12,10 +12,10 @@ import utils.Utils;
 
 import java.io.IOException;
 
-public class ContactSupervisor extends OneShotBehaviour {
+public class ChooseAndContactSupervisor extends OneShotBehaviour {
     private String researchInterest;
     private Thesis adhocThesis;
-    public ContactSupervisor(Agent agent, String researchInterest, Thesis adhocThesis) {
+    public ChooseAndContactSupervisor(Agent agent, String researchInterest, Thesis adhocThesis) {
         super(agent);
         this.researchInterest = researchInterest;
         this.adhocThesis = adhocThesis;
@@ -26,7 +26,6 @@ public class ContactSupervisor extends OneShotBehaviour {
         // contact the supervisors that have the same research interest with the agent
         AID[] supervisorsToContact = Utils.getAgentList(myAgent, researchInterest);
         if(supervisorsToContact != null && supervisorsToContact.length>0){
-            adhocThesis.setThesisSupervisor(supervisorsToContact[0]);
             ACLMessage message = new ACLMessage(ACLMessage.PROPOSE);
             try {
                 message.setContentObject(adhocThesis);

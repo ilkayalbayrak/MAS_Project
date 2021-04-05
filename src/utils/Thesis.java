@@ -17,14 +17,9 @@ public class Thesis implements Serializable {
     private AID thesisStudent;
     private AID thesisSupervisor;
 
-//    public Thesis(String thesisType, String thesisTitle, String thesisSubject, String thesisInfo, int academicWorth, AID thesisStudent, AID thesisSupervisor) {
-//        this.thesisType = thesisType;
-//        this.thesisTitle = thesisTitle;
-//        this.thesisSubject = thesisSubject;
-//        this.thesisInfo = thesisInfo;
-//        this.academicWorth = academicWorth;
-//        this.thesisStudent = thesisStudent;
-//        this.thesisSupervisor = thesisSupervisor;
+//    public Thesis() {
+//
+////        this.thesisSupervisor = null;
 //    }
 
 

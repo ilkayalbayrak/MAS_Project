@@ -17,6 +17,7 @@ public class Student3 extends Agent {
 
         // the custom thesis that student wants to do
         Thesis adhocThesis = new Thesis();
+        adhocThesis.setThesisSupervisor(null);
         adhocThesis.setThesisType(ThesisTypes.AD_HOC.toString());
         adhocThesis.setThesisTitle("AD_HOC_Thesis_1");
         adhocThesis.setThesisSubject(researchInterest);

@@ -10,17 +10,14 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
+import utils.Thesis;
 import utils.Utils;
 
 import java.io.IOException;
 import java.util.HashSet;
 
 public class EvaluateExternalThesisProposals extends CyclicBehaviour {
-    private final HashSet<String> acceptableThesisCourses = new HashSet<>();
-    private String[] messageContent;
-    private String thesisTitle = null;
-    private String thesisSubject = null;
-
+    private Thesis receivedThesis;
 
     public EvaluateExternalThesisProposals(Agent agent) {
         super(agent);
@@ -28,11 +25,6 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
 
     @Override
     public void action() {
-        acceptableThesisCourses.add("ML");
-        acceptableThesisCourses.add("NLP");
-        acceptableThesisCourses.add("MAS");
-        acceptableThesisCourses.add("SPR");
-        acceptableThesisCourses.add("LSC");
 
         MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE.name()),
                 MessageTemplate.MatchPerformative(ACLMessage.INFORM));
@@ -41,32 +33,30 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
         if (receivedMessage != null){
             System.out.println("[INFO] Agent "+myAgent.getLocalName()+" received info about EXTERNAL thesis from Agent: "+receivedMessage.getSender().getLocalName());
             try {
-                messageContent = (String[]) receivedMessage.getContentObject();
-                thesisTitle = messageContent[0];
-                thesisSubject = messageContent[1];
-                System.out.println("[INFO] EXTERNAL Thesis: " + thesisTitle+" Course: "+thesisSubject);
+                receivedThesis = (Thesis) receivedMessage.getContentObject();
+                System.out.println("[INFO] EXTERNAL Thesis:" + receivedThesis.getThesisTitle()+" Course:"+receivedThesis.getThesisSubject());
             } catch (UnreadableException e) {
                 System.out.println("[ERROR] Agent "+myAgent.getLocalName()+" could not read the contents of the message coming from Agent: "+receivedMessage.getSender().getLocalName());
                 e.printStackTrace();
             }
-            if (acceptableThesisCourses.contains(thesisSubject)){
+            if (receivedThesis.getAcademicWorth() > 50){
                 // search and select a supervisor for the chosen thesis
                 // inform the student agent that its external thesis proposal is accepted
                 // inform the selected supervisor
-                AID[] thesisSupervisor = Utils.getAgentList(myAgent, thesisSubject);
+                AID[] thesisSupervisor = Utils.getAgentList(myAgent, receivedThesis.getThesisSubject());
                 if(thesisSupervisor != null && thesisSupervisor.length > 0){
                     ACLMessage messageToSupervisor = new ACLMessage(ACLMessage.INFORM);
                     messageToSupervisor.setConversationId(ConversationIDs.SELECT_SUPERVISOR_FOR_EXTERNAL_THESIS.name());
                     messageToSupervisor.addReceiver(thesisSupervisor[0]);
                     try {
-                        messageToSupervisor.setContentObject(messageContent);
+                        messageToSupervisor.setContentObject(receivedThesis);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
                     myAgent.send(messageToSupervisor);
                     System.out.println("[INFO] Agent "+myAgent.getLocalName()+" selected Agent: "+thesisSupervisor[0].getLocalName()+
-                            " as the supervisor the Thesis: "+thesisTitle+" which will be done by Agent: "+receivedMessage.getSender().getLocalName());
+                            " as the supervisor the Thesis: "+receivedThesis.getThesisTitle()+" which will be done by Agent: "+receivedMessage.getSender().getLocalName());
                 }
 
 

@@ -7,6 +7,7 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import utils.Thesis;
 import utils.Utils;
 
 import java.io.IOException;
@@ -15,10 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 public class OfferCompanyThesisProposals extends CyclicBehaviour {
-    private Map<String,String> companyThesisList;
+    private List<Thesis> companyThesisList;
     private List<String> studentConversationIDs;
 
-    public OfferCompanyThesisProposals(Agent agent, Map<String, String> companyThesisList) {
+    public OfferCompanyThesisProposals(Agent agent, List<Thesis> companyThesisList) {
         super(agent);
         this.companyThesisList = companyThesisList;
     }

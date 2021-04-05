@@ -8,12 +8,16 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
+import utils.Thesis;
 import utils.Utils;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 public class RequestThesisProposals extends Behaviour {
-    private HashMap<String, String> receivedProposals = new HashMap<>();
+    private List<Thesis> receivedProposals = new LinkedList<>();
     private String chosenThesisTitle;
     private final String thesisType;
     private MessageTemplate messageTemplate;
@@ -61,7 +65,7 @@ public class RequestThesisProposals extends Behaviour {
                 if (receivedMessage != null){
                     if(receivedMessage.getPerformative() == ACLMessage.PROPOSE){
                         try {
-                            receivedProposals = (HashMap) receivedMessage.getContentObject();
+                            receivedProposals = (List<Thesis>) receivedMessage.getContentObject();
                         } catch (UnreadableException e) {
                             e.printStackTrace();
                         }
@@ -69,14 +73,18 @@ public class RequestThesisProposals extends Behaviour {
                         System.out.println("\n[INFO] Reply from: "+ receivedMessage.getSender().getLocalName() + " with content: \n"  +receivedProposals);
 
                         // randomly pick a thesis for now
-                        chosenThesisTitle = Utils.pickRandomThesis(receivedProposals);
-                        System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the thesis with the title: "+chosenThesisTitle);
+                        Thesis chosenThesis = Utils.pickRandomThesis(receivedProposals);
+                        System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the thesis with the title: "+chosenThesis.getThesisTitle());
                         ACLMessage reply = receivedMessage.createReply();
                         reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                         reply.setConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.name());
-                        reply.setContent(chosenThesisTitle);
+                        try {
+                            reply.setContentObject(chosenThesisTitle);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
 
-                        System.out.println("\n[INFO] Agent " +myAgent.getLocalName()+ " sent the chosen thesis title to its supervisor.");
+                        System.out.println("\n[INFO] Agent " +myAgent.getLocalName()+ " sent the chosen thesis proposal with the Title:"+chosenThesis.getThesisTitle()+" to Agent:"+receivedMessage.getSender().getLocalName()+".");
                         myAgent.send(reply);
                         step = 2;
                     }

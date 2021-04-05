@@ -1,9 +1,6 @@
 package utils;
 
-import behaviours.ChooseCompanyThesisProposal;
-import behaviours.ContactSupervisor;
-import behaviours.RequestExternalThesisProposals;
-import behaviours.RequestThesisProposals;
+import behaviours.*;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -11,8 +8,8 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 
+import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 
 public class Utils {
@@ -76,10 +73,11 @@ public class Utils {
         }
     }
 
-    public static String pickRandomThesis(Map<String,String> list){
+    public static Thesis pickRandomThesis(List<Thesis> list){
         if(list != null){
-            Object randomThesis = list.keySet().toArray()[new Random().nextInt(list.keySet().toArray().length)];
-            return randomThesis.toString();
+            Random rand = new Random();
+            Thesis randomElement = list.get(rand.nextInt(list.size()));
+            return randomElement;
         }
         System.out.println("\n[ERROR] pickRandomThesis list is empty...");
         return null;
@@ -110,7 +108,8 @@ public class Utils {
                     // Student offers its own idea for a thesis to supervisor
                     // student and supervisor come to an agreement whether the thesis is OK or not
                     if (adhocThesis !=null){
-                        agent.addBehaviour(new ContactSupervisor(agent, researchInterest, adhocThesis));
+                        agent.addBehaviour(new ChooseAndContactSupervisor(agent, researchInterest, adhocThesis));
+                        agent.addBehaviour(new ListenResponseForAdHocThesis(agent));
                     } else {
                         System.out.println("[ERROR] Agent "+agent.getLocalName()+": There are no presented AD HOC thesis proposals.");
                     }

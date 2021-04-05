@@ -8,16 +8,20 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
+import utils.Thesis;
 import utils.Utils;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class ChooseCompanyThesisProposal extends CyclicBehaviour {
-    private HashMap<String,String> receivedProposals = new HashMap<>();
+    private List<Thesis> receivedProposals = new LinkedList<>();
     public ChooseCompanyThesisProposal(Agent agent) {
+        super(agent);
     }
 
     @Override
@@ -30,7 +34,7 @@ public class ChooseCompanyThesisProposal extends CyclicBehaviour {
             System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received message from "+receivedMessage.getSender().getName());
 
             try{
-                receivedProposals = (HashMap<String, String>) receivedMessage.getContentObject();
+                receivedProposals = (List<Thesis>) receivedMessage.getContentObject();
             } catch (UnreadableException e) {
                 System.out.println("[ERROR] Agent "+ myAgent.getLocalName()+ " could not extract the proposals object from message");
                 e.printStackTrace();
@@ -38,12 +42,16 @@ public class ChooseCompanyThesisProposal extends CyclicBehaviour {
             System.out.println("\n[INFO] Reply from: "+ receivedMessage.getSender().getLocalName() + " with content: \n"  +receivedProposals);
 
             // randomly pick a thesis for now
-            String chosenThesisTitle = Utils.pickRandomThesis(receivedProposals);
-            System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the EXTERNAL thesis with the title: "+chosenThesisTitle);
+            Thesis chosenThesis = Utils.pickRandomThesis(receivedProposals);
+            System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the EXTERNAL thesis with the title: "+chosenThesis.getThesisTitle());
 
             ACLMessage reply = receivedMessage.createReply();
             reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-            reply.setContent(chosenThesisTitle);
+            try {
+                reply.setContentObject(chosenThesis);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             reply.addReplyTo(receivedMessage.getSender());
 //            receivedProposals.get(chosenThesisTitle);
 
@@ -51,14 +59,14 @@ public class ChooseCompanyThesisProposal extends CyclicBehaviour {
             myAgent.send(reply);
 
             // todo: inform the thesis committee about chosen external thesis
-            String[] chosenThesisInfo = {chosenThesisTitle, receivedProposals.get(chosenThesisTitle)};
+
             AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
             if (thesisCommittee != null && thesisCommittee.length > 0){
                 ACLMessage message = new ACLMessage(ACLMessage.INFORM);
                 message.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE.name());
                 message.addReceiver(thesisCommittee[0]);
                 try {
-                    message.setContentObject(chosenThesisInfo);
+                    message.setContentObject(chosenThesis);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
