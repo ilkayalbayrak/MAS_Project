@@ -18,9 +18,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ChooseCompanyThesisProposal extends CyclicBehaviour {
+public class ChooseExternalThesisProposal extends CyclicBehaviour {
     private List<Thesis> receivedProposals = new LinkedList<>();
-    public ChooseCompanyThesisProposal(Agent agent) {
+    public ChooseExternalThesisProposal(Agent agent) {
         super(agent);
     }
 
@@ -39,10 +39,13 @@ public class ChooseCompanyThesisProposal extends CyclicBehaviour {
                 System.out.println("[ERROR] Agent "+ myAgent.getLocalName()+ " could not extract the proposals object from message");
                 e.printStackTrace();
             }
-            System.out.println("\n[INFO] Reply from: "+ receivedMessage.getSender().getLocalName() + " with content: \n"  +receivedProposals);
 
+            System.out.println("\n[INFO] Agent:"+myAgent.getLocalName()+" received a reply from Agent:"+ receivedMessage.getSender().getLocalName() + " that contains thesis proposals: \n");
             // randomly pick a thesis for now
             Thesis chosenThesis = Utils.pickRandomThesis(receivedProposals);
+
+            // write register agent's name to the thesis object
+            chosenThesis.setThesisStudent(myAgent.getAID());
             System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the EXTERNAL thesis with the title: "+chosenThesis.getThesisTitle());
 
             ACLMessage reply = receivedMessage.createReply();

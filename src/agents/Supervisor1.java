@@ -25,7 +25,7 @@ public class Supervisor1 extends Agent {
         return onGoingThesesList;
     }
 
-    public void setOnGoingTheses(Thesis thesis, AID student) {
+    public void setOnGoingTheses(AID student,Thesis thesis) {
         onGoingThesesList.put(student, thesis);
     }
 
@@ -109,6 +109,7 @@ public class Supervisor1 extends Agent {
         addBehaviour(new OfferThesisProposals(this, proposalList));
         addBehaviour(new HandleThesisAcceptances());
         addBehaviour(new ListenAdHocProposals(this));
+        addBehaviour(new ListenThesisCommittee(this));
 //        addBehaviour(new ListenStudents(this));
     }
 
@@ -127,14 +128,14 @@ public class Supervisor1 extends Agent {
             if (receivedMessage != null){
                 if(receivedMessage.getPerformative() == ACLMessage.ACCEPT_PROPOSAL){
 
-                    Thesis chosenThesisTitle = null;
+                    Thesis chosenThesis = null;
                     try {
-                        chosenThesisTitle = (Thesis) receivedMessage.getContentObject();
+                        chosenThesis = (Thesis) receivedMessage.getContentObject();
                     } catch (UnreadableException e) {
                         e.printStackTrace();
                     }
-                    removeProposal(chosenThesisTitle);
-                    System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesisTitle+
+                    removeProposal(chosenThesis);
+                    System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesis.getThesisTitle()+
                             " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
                 } else if(receivedMessage.getPerformative() == ACLMessage.REJECT_PROPOSAL){
                     System.out.println("\n[INFO] "+receivedMessage.getSender().getLocalName()+
@@ -174,7 +175,7 @@ public class Supervisor1 extends Agent {
                 ACLMessage reply = receivedMessage.createReply();
                 if (receivedAdHocThesis.getAcademicWorth() > 50) {
                     receivedAdHocThesis.setThesisSupervisor(myAgent.getAID());
-                    setOnGoingTheses(receivedAdHocThesis, receivedMessage.getSender());
+                    setOnGoingTheses(receivedMessage.getSender(),receivedAdHocThesis);
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
                     reply.setContent(SupervisorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
@@ -193,6 +194,46 @@ public class Supervisor1 extends Agent {
             }else {
                 block();
             }
+        }
+    }
+
+    private class ListenThesisCommittee extends CyclicBehaviour{
+
+        public ListenThesisCommittee(Agent agent) {
+            super(agent);
+        }
+
+        @Override
+        public void action() {
+            // Listen Th committee for external based thesis proposals
+            MessageTemplate mtExternalThesis = MessageTemplate.MatchConversationId(ConversationIDs.SELECT_SUPERVISOR_FOR_EXTERNAL_THESIS.toString());
+            ACLMessage receivedMessage = myAgent.receive(mtExternalThesis);
+
+            if (receivedMessage != null ){
+//                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ");
+                //Get the external TH proposal from the msg content
+                Thesis receivedThesis = null;
+                try {
+                    receivedThesis = (Thesis) receivedMessage.getContentObject();
+                } catch (UnreadableException e) {
+                    System.out.println("[ERROR] Agent "+myAgent.getLocalName()+" could not read the contents of the message coming from Agent: "+receivedMessage.getSender().getLocalName());
+                    e.printStackTrace();
+                }
+
+                // Revise the received thesis proposal before placing it into the "ongoing thesis" bucket
+                receivedThesis.setRevisedBySupervisor(true);
+
+                // put the thesis into on going thesis list
+                AID student = receivedThesis.getThesisStudent();
+                setOnGoingTheses(student, receivedThesis);
+
+                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
+            }else {
+                block();
+            }
+
+
+
         }
     }
 

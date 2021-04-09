@@ -16,7 +16,15 @@ public class Thesis implements Serializable {
     private int academicWorth;
     private AID thesisStudent;
     private AID thesisSupervisor;
+    private boolean revisedBySupervisor = false;
 
+    public boolean isRevisedBySupervisor() {
+        return revisedBySupervisor;
+    }
+
+    public void setRevisedBySupervisor(boolean revisedBySupervisor) {
+        this.revisedBySupervisor = revisedBySupervisor;
+    }
 //    public Thesis() {
 //
 ////        this.thesisSupervisor = null;

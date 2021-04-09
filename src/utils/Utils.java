@@ -9,7 +9,6 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 public class Utils {
@@ -68,7 +67,7 @@ public class Utils {
             }
             return offeringAgents;
         } else {
-            System.out.println("[INFO] There are no agents in yellow pages that offer the service: {"+service+"}.");
+            System.out.println("[ERROR] There are no agents in yellow pages that offer the service: {"+service+"}.");
             return null;
         }
     }
@@ -100,7 +99,7 @@ public class Utils {
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the EXTERNAL TH path ");
                     // then ask Thesis committee if that is acceptable
                     agent.addBehaviour(new RequestExternalThesisProposals(agent));
-                    agent.addBehaviour(new ChooseCompanyThesisProposal(agent));
+                    agent.addBehaviour(new ChooseExternalThesisProposal(agent));
                     break;
                 case "AD_HOC":
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the AD_HOC TH path ");
@@ -118,6 +117,8 @@ public class Utils {
                 case "PROPOSED":
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the PROPOSED TH path ");
                     agent.addBehaviour(new RequestThesisProposals(agent, thesisType));
+                    agent.addBehaviour(new ChooseUniThesisProposals(agent));
+//                    agent.addBehaviour(new Test(agent, thesisType));
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value for thesisType: " + thesisType);

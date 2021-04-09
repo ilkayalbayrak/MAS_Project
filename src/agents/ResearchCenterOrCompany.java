@@ -26,46 +26,46 @@ public class ResearchCenterOrCompany extends Agent {
         Thesis thesis1 = new Thesis();
         thesis1.setThesisSupervisor(this.getAID());
         thesis1.setThesisStudent(null);
-        thesis1.setThesisType(ThesisTypes.PROPOSED.toString());
-        thesis1.setThesisTitle("NLP_Thesis1");
+        thesis1.setThesisType(ThesisTypes.EXTERNAL.toString());
+        thesis1.setThesisTitle("External_Thesis1");
         thesis1.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
-        thesis1.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
+        thesis1.setThesisInfo("Some imaginary info about a research topic within the borders of External");
         thesis1.setAcademicWorth(90);
 
         Thesis thesis2 = new Thesis();
         thesis2.setThesisSupervisor(this.getAID());
         thesis2.setThesisStudent(null);
-        thesis2.setThesisType(ThesisTypes.PROPOSED.toString());
-        thesis2.setThesisTitle("NLP_Thesis2");
-        thesis2.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
-        thesis2.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
+        thesis2.setThesisType(ThesisTypes.EXTERNAL.toString());
+        thesis2.setThesisTitle("External_Thesis2");
+        thesis2.setThesisSubject(ThesisMainSubjects.MACHINE_LEARNING.toString());
+        thesis2.setThesisInfo("Some imaginary info about a research topic within the borders of External");
         thesis2.setAcademicWorth(100);
 
         Thesis thesis3 = new Thesis();
         thesis3.setThesisSupervisor(this.getAID());
         thesis3.setThesisStudent(null);
-        thesis3.setThesisType(ThesisTypes.PROPOSED.toString());
-        thesis3.setThesisTitle("NLP_Thesis3");
+        thesis3.setThesisType(ThesisTypes.EXTERNAL.toString());
+        thesis3.setThesisTitle("External_Thesis3");
         thesis3.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
-        thesis3.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
+        thesis3.setThesisInfo("Some imaginary info about a research topic within the borders of External");
         thesis3.setAcademicWorth(75);
 
         Thesis thesis4 = new Thesis();
         thesis4.setThesisSupervisor(this.getAID());
         thesis4.setThesisStudent(null);
-        thesis4.setThesisType(ThesisTypes.PROPOSED.toString());
-        thesis4.setThesisTitle("NLP_Thesis4");
+        thesis4.setThesisType(ThesisTypes.EXTERNAL.toString());
+        thesis4.setThesisTitle("External_Thesis4");
         thesis4.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
-        thesis4.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
+        thesis4.setThesisInfo("Some imaginary info about a research topic within the borders of External");
         thesis4.setAcademicWorth(87);
 
         Thesis thesis5 = new Thesis();
         thesis5.setThesisSupervisor(this.getAID());
         thesis5.setThesisStudent(null);
-        thesis5.setThesisType(ThesisTypes.PROPOSED.toString());
-        thesis5.setThesisTitle("NLP_Thesis5");
-        thesis5.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
-        thesis5.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
+        thesis5.setThesisType(ThesisTypes.EXTERNAL.toString());
+        thesis5.setThesisTitle("External_Thesis5");
+        thesis5.setThesisSubject(ThesisMainSubjects.MACHINE_LEARNING.toString());
+        thesis5.setThesisInfo("Some imaginary info about a research topic within the borders of External");
         thesis5.setAcademicWorth(80);
 
         companyThesisList.add(thesis1);

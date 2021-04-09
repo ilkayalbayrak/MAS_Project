@@ -44,7 +44,7 @@ public class OfferThesisProposals extends CyclicBehaviour {
                         System.out.println("\n[ERROR] Agent "+ myAgent.getLocalName() +" Failed to serialize its proposalList object.");
                         e.printStackTrace();
                     }
-                    System.out.println("\n[INFO] Agent " + myAgent.getLocalName() + " has sent the list of thesis proposals to AGENT: {" + receivedMessage.getSender().getLocalName() + "}.\nProposals: "+reply.getContent() +"\n");
+                    System.out.println("\n[INFO] Agent " + myAgent.getLocalName() + " has sent the list of thesis proposals to AGENT: {" + receivedMessage.getSender().getLocalName() + "}.");
                     myAgent.send(reply);
                 }
             }

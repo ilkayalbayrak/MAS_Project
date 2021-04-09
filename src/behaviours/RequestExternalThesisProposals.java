@@ -29,6 +29,8 @@ public class RequestExternalThesisProposals extends OneShotBehaviour {
             message.setConversationId(ConversationIDs.ASK_COMPANY_PROPOSALS.name()+myAgent.getLocalName());
             System.out.println("[INFO] Agent "+myAgent.getLocalName()+" sent a request to the companies to see their thesis opportunities.");
             myAgent.send(message);
+        }else {
+            System.out.println("\n[ERROR] There are no agents that offer the given service.");
         }
 
     }
