@@ -28,7 +28,7 @@ public class ResearchCenterOrCompany extends Agent {
         thesis1.setThesisStudent(null);
         thesis1.setThesisType(ThesisTypes.EXTERNAL.toString());
         thesis1.setThesisTitle("External_Thesis1");
-        thesis1.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
+        thesis1.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis1.setThesisInfo("Some imaginary info about a research topic within the borders of External");
         thesis1.setAcademicWorth(90);
 
@@ -46,7 +46,7 @@ public class ResearchCenterOrCompany extends Agent {
         thesis3.setThesisStudent(null);
         thesis3.setThesisType(ThesisTypes.EXTERNAL.toString());
         thesis3.setThesisTitle("External_Thesis3");
-        thesis3.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
+        thesis3.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis3.setThesisInfo("Some imaginary info about a research topic within the borders of External");
         thesis3.setAcademicWorth(75);
 
@@ -55,7 +55,7 @@ public class ResearchCenterOrCompany extends Agent {
         thesis4.setThesisStudent(null);
         thesis4.setThesisType(ThesisTypes.EXTERNAL.toString());
         thesis4.setThesisTitle("External_Thesis4");
-        thesis4.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
+        thesis4.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis4.setThesisInfo("Some imaginary info about a research topic within the borders of External");
         thesis4.setAcademicWorth(87);
 

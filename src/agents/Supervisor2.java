@@ -241,9 +241,6 @@ public class Supervisor2 extends Agent {
                 }else {
                 block();
             }
-
-
-
         }
     }
 }

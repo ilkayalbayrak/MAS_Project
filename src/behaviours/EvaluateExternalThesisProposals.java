@@ -31,7 +31,7 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
 
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
         if (receivedMessage != null){
-            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received info about EXTERNAL thesis from Agent:["+receivedMessage.getSender().getLocalName()+"]");
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received info about an EXTERNAL thesis from Agent:["+receivedMessage.getSender().getLocalName()+"]");
             try {
                 receivedThesis = (Thesis) receivedMessage.getContentObject();
                 System.out.println("[INFO] Received EXTERNAL Thesis:[" + receivedThesis.getThesisTitle()+"] Course:["+receivedThesis.getThesisSubject()+"]");
@@ -40,10 +40,11 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
                 e.printStackTrace();
             }
             if (receivedThesis.getAcademicWorth() > 50){
+                System.out.println("INFO ##################### JUST A CHECK ##################"); // this works fine
                 // search and select a supervisor for the chosen thesis
                 // inform the student agent that its external thesis proposal is accepted
                 // inform the selected supervisor
-                AID[] thesisSupervisor = Utils.getAgentList(myAgent, receivedThesis.getThesisSubject());
+                AID[] thesisSupervisor = Utils.getAgentList(myAgent, receivedThesis.getThesisSubject().toString());
                 if(thesisSupervisor != null && thesisSupervisor.length > 0){
                     ACLMessage messageToSupervisor = new ACLMessage(ACLMessage.INFORM);
                     messageToSupervisor.setConversationId(ConversationIDs.SELECT_SUPERVISOR_FOR_EXTERNAL_THESIS.toString());
@@ -56,6 +57,8 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
                     myAgent.send(messageToSupervisor);
                     System.out.println("[INFO] Agent "+myAgent.getLocalName()+" selected Agent: "+thesisSupervisor[0].getLocalName()+
                             " as the supervisor the Thesis: "+receivedThesis.getThesisTitle()+" which will be done by Agent: "+receivedMessage.getSender().getLocalName());
+                } else {
+                    System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] says: there are no agents that providing the Service:["+receivedThesis.getThesisSubject()+"]");
                 }
 
 

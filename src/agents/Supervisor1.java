@@ -48,7 +48,7 @@ public class Supervisor1 extends Agent {
         thesis1.setThesisStudent(null);
         thesis1.setThesisType(ThesisTypes.PROPOSED.toString());
         thesis1.setThesisTitle("NLP_Thesis1");
-        thesis1.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
+        thesis1.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis1.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis1.setAcademicWorth(90);
 
@@ -57,7 +57,7 @@ public class Supervisor1 extends Agent {
         thesis2.setThesisStudent(null);
         thesis2.setThesisType(ThesisTypes.PROPOSED.toString());
         thesis2.setThesisTitle("NLP_Thesis2");
-        thesis2.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
+        thesis2.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis2.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis2.setAcademicWorth(100);
 
@@ -66,7 +66,7 @@ public class Supervisor1 extends Agent {
         thesis3.setThesisStudent(null);
         thesis3.setThesisType(ThesisTypes.PROPOSED.toString());
         thesis3.setThesisTitle("NLP_Thesis3");
-        thesis3.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
+        thesis3.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis3.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis3.setAcademicWorth(75);
 
@@ -75,7 +75,7 @@ public class Supervisor1 extends Agent {
         thesis4.setThesisStudent(null);
         thesis4.setThesisType(ThesisTypes.PROPOSED.toString());
         thesis4.setThesisTitle("NLP_Thesis4");
-        thesis4.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
+        thesis4.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis4.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis4.setAcademicWorth(87);
 
@@ -84,7 +84,7 @@ public class Supervisor1 extends Agent {
         thesis5.setThesisStudent(null);
         thesis5.setThesisType(ThesisTypes.PROPOSED.toString());
         thesis5.setThesisTitle("NLP_Thesis5");
-        thesis5.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROPOSAL.toString());
+        thesis5.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis5.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis5.setAcademicWorth(80);
 
@@ -110,7 +110,6 @@ public class Supervisor1 extends Agent {
         addBehaviour(new HandleThesisAcceptances());
         addBehaviour(new ListenAdHocProposals(this));
         addBehaviour(new ListenThesisCommittee(this));
-//        addBehaviour(new ListenStudents(this));
     }
 
     protected void takeDown(){
@@ -196,8 +195,8 @@ public class Supervisor1 extends Agent {
             }
         }
     }
-
     private class ListenThesisCommittee extends CyclicBehaviour{
+        private Thesis receivedThesis;
 
         public ListenThesisCommittee(Agent agent) {
             super(agent);
@@ -206,28 +205,36 @@ public class Supervisor1 extends Agent {
         @Override
         public void action() {
             // Listen Th committee for external based thesis proposals
-            MessageTemplate mtExternalThesis = MessageTemplate.MatchConversationId(ConversationIDs.SELECT_SUPERVISOR_FOR_EXTERNAL_THESIS.toString());
+            MessageTemplate mtExternalThesis = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.SELECT_SUPERVISOR_FOR_EXTERNAL_THESIS.toString()),
+                    MessageTemplate.MatchPerformative(ACLMessage.INFORM));
             ACLMessage receivedMessage = myAgent.receive(mtExternalThesis);
 
             if (receivedMessage != null ){
-//                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ");
+                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## MESSAGG E IS NOT NUUUUUULLLLLLLLL");
                 //Get the external TH proposal from the msg content
-                Thesis receivedThesis = null;
+//                Thesis receivedThesis = null;
                 try {
                     receivedThesis = (Thesis) receivedMessage.getContentObject();
                 } catch (UnreadableException e) {
                     System.out.println("[ERROR] Agent "+myAgent.getLocalName()+" could not read the contents of the message coming from Agent: "+receivedMessage.getSender().getLocalName());
                     e.printStackTrace();
                 }
+                if (receivedThesis != null){
+                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NOT NUUUUUULLLLLLLLL");
+                    // Revise the received thesis proposal before placing it into the "ongoing thesis" bucket
+                    receivedThesis.setRevisedBySupervisor(true);
 
-                // Revise the received thesis proposal before placing it into the "ongoing thesis" bucket
-                receivedThesis.setRevisedBySupervisor(true);
+                    // put the thesis into on going thesis list
+                    AID student = receivedThesis.getThesisStudent();
+                    setOnGoingTheses(student, receivedThesis);
 
-                // put the thesis into on going thesis list
-                AID student = receivedThesis.getThesisStudent();
-                setOnGoingTheses(student, receivedThesis);
+                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
 
-                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
+                }else {
+                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NUUUUUULLLLLLLLL sssssssssssssssssssoooooooooooorrrrrrrrrrrrrrrrrryyyyyyyyyyy");
+                }
+
+
             }else {
                 block();
             }
@@ -236,6 +243,5 @@ public class Supervisor1 extends Agent {
 
         }
     }
-
 }
 
