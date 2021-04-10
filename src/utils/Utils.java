@@ -118,6 +118,7 @@ public class Utils {
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the PROPOSED TH path ");
                     agent.addBehaviour(new RequestThesisProposals(agent, thesisType));
                     agent.addBehaviour(new ChooseUniThesisProposals(agent));
+                    agent.addBehaviour(new HandleChosenThesisNotExist(agent));
 //                    agent.addBehaviour(new Test(agent, thesisType));
                     break;
                 default:

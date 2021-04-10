@@ -14,6 +14,8 @@ import jade.lang.acl.UnreadableException;
 import utils.Thesis;
 import utils.Utils;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -51,6 +53,7 @@ public class Supervisor1 extends Agent {
         thesis1.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis1.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis1.setAcademicWorth(90);
+        thesis1.setRevisedBySupervisor(true);
 
         Thesis thesis2 = new Thesis();
         thesis2.setThesisSupervisor(this.getAID());
@@ -60,6 +63,7 @@ public class Supervisor1 extends Agent {
         thesis2.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis2.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis2.setAcademicWorth(100);
+        thesis2.setRevisedBySupervisor(true);
 
         Thesis thesis3 = new Thesis();
         thesis3.setThesisSupervisor(this.getAID());
@@ -69,6 +73,7 @@ public class Supervisor1 extends Agent {
         thesis3.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis3.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis3.setAcademicWorth(75);
+        thesis3.setRevisedBySupervisor(true);
 
         Thesis thesis4 = new Thesis();
         thesis4.setThesisSupervisor(this.getAID());
@@ -78,6 +83,7 @@ public class Supervisor1 extends Agent {
         thesis4.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis4.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis4.setAcademicWorth(87);
+        thesis4.setRevisedBySupervisor(true);
 
         Thesis thesis5 = new Thesis();
         thesis5.setThesisSupervisor(this.getAID());
@@ -87,6 +93,7 @@ public class Supervisor1 extends Agent {
         thesis5.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
         thesis5.setThesisInfo("Some imaginary info about a research topic within the borders of NLP");
         thesis5.setAcademicWorth(80);
+        thesis5.setRevisedBySupervisor(true);
 
         proposalList.add(thesis1);
         proposalList.add(thesis2);
@@ -117,6 +124,10 @@ public class Supervisor1 extends Agent {
         System.out.println(this.getAID().getName() + " says: I have served my purpose. Now, time has come to set sail for the Undying Lands.");
     }
 
+    // For the PROPOSED THESIS PATH
+    // Receive info about which one of supervisor's TH proposals have been chosen by a student agent
+    // Remove the chosen proposal from the supervisor's proposal list
+    // Put the chosen thesis and student agent's name into the ON_GOING thesis list
     private class HandleThesisAcceptances extends CyclicBehaviour {
 
         @Override
@@ -131,11 +142,35 @@ public class Supervisor1 extends Agent {
                     try {
                         chosenThesis = (Thesis) receivedMessage.getContentObject();
                     } catch (UnreadableException e) {
+                        System.out.println("[ERROR] Agent "+ myAgent.getLocalName()+ " could not extract the proposals object from message");
                         e.printStackTrace();
                     }
-                    removeProposal(chosenThesis);
-                    System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesis.getThesisTitle()+
-                            " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
+                    assert chosenThesis != null;
+                    // todo: Check if the chosen thesis is already in the ON GOING theses list
+                    // if the chosen title already been picked send AVAILABLE proposals so the agent can pick one of them
+                    if (getOnGoingThesesList().containsValue(chosenThesis)){
+                        System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] says: Thesis:["+chosenThesis.getThesisTitle()+"] has already been chosen by another agent and informs the Agent:["+receivedMessage.getSender().getLocalName()+"] about the situation.");
+                        ACLMessage reply = receivedMessage.createReply();
+                        reply.setPerformative(ACLMessage.INFORM);
+                        reply.setConversationId(ConversationIDs.THESIS_ALREADY_BEEN_PICKED.toString());
+                        try {
+                            reply.setContentObject((Serializable) getProposalList());
+                        } catch (IOException e) {
+                            System.out.println("\n[ERROR] Agent:["+ myAgent.getLocalName() +"] Failed to serialize its proposalList object.");
+                            e.printStackTrace();
+                        }
+                        myAgent.send(reply);
+
+                    } else{
+                        removeProposal(chosenThesis);
+                        System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesis.getThesisTitle()+
+                                " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
+
+                        AID student = chosenThesis.getThesisStudent();
+                        setOnGoingTheses(student,chosenThesis);
+                        System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+chosenThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
+                    }
+
                 } else if(receivedMessage.getPerformative() == ACLMessage.REJECT_PROPOSAL){
                     System.out.println("\n[INFO] "+receivedMessage.getSender().getLocalName()+
                             " wants to reject the proposal.");
@@ -149,6 +184,8 @@ public class Supervisor1 extends Agent {
 
         }
     }
+
+
 
     private class ListenAdHocProposals extends CyclicBehaviour {
         private Thesis receivedAdHocThesis;

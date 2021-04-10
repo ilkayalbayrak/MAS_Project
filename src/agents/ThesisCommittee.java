@@ -17,8 +17,6 @@ public class ThesisCommittee extends Agent {
         addBehaviour(new EvaluateExternalThesisProposals(this));
     }
 
-
-
     protected void takeDown(){
         Utils.deregister(this);
         System.out.println("Thesis Committee " +  getAID().getName() + " says:I have served my purpose. Now, time has come to set sail for the Undying Lands.");

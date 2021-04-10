@@ -44,7 +44,8 @@ public class ChooseExternalThesisProposal extends CyclicBehaviour {
             // randomly pick a thesis for now
             Thesis chosenThesis = Utils.pickRandomThesis(receivedProposals);
 
-            // write register agent's name to the thesis object
+            // register the student agent to the thesis object
+            assert chosenThesis != null;
             chosenThesis.setThesisStudent(myAgent.getAID());
             System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the EXTERNAL thesis with the title: "+chosenThesis.getThesisTitle());
 

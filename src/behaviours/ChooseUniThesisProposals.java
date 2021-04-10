@@ -50,10 +50,14 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
                     List<AID> keysAsArray = new ArrayList<>(proposalsBySupervisors.keySet());
                     Random r = new Random();
                     Thesis chosenThesis = Utils.pickRandomThesis(proposalsBySupervisors.get(keysAsArray.get(r.nextInt(keysAsArray.size()))));
+
+                    assert chosenThesis != null;
+                    // set the thesisStudent variable of the thesis object to show, who owns the thesis
+                    chosenThesis.setThesisStudent(myAgent.getAID());
                     System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the thesis with the title: "+chosenThesis.getThesisTitle() + " from the received");
                     ACLMessage reply = receivedMessage.createReply();
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                    reply.setConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.name());
+                    reply.setConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.toString());
                     try {
                         reply.setContentObject(chosenThesis);
                     } catch (IOException e) {
