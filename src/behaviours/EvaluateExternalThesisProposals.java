@@ -26,7 +26,7 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
     @Override
     public void action() {
 
-        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE.name()),
+        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_FOR_EXTERNAL_THESIS.name()),
                 MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);

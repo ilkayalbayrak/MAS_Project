@@ -67,7 +67,7 @@ public class ChooseExternalThesisProposal extends CyclicBehaviour {
             AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
             if (thesisCommittee != null && thesisCommittee.length > 0){
                 ACLMessage message = new ACLMessage(ACLMessage.INFORM);
-                message.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE.toString());
+                message.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_FOR_EXTERNAL_THESIS.toString());
                 message.addReceiver(thesisCommittee[0]);
                 try {
                     message.setContentObject(chosenThesis);
@@ -76,6 +76,8 @@ public class ChooseExternalThesisProposal extends CyclicBehaviour {
                 }
                 myAgent.send(message);
 
+            } else {
+                System.out.println("[ERROR] There are no agents with the service that is being searched for.");
             }
         } else {
             block();

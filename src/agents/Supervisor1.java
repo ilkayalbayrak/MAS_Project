@@ -169,6 +169,23 @@ public class Supervisor1 extends Agent {
                         AID student = chosenThesis.getThesisStudent();
                         setOnGoingTheses(student,chosenThesis);
                         System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+chosenThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
+
+                        // todo: inform thesis committe after registering a thesis as ONGOING
+                        AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
+                        if (thesisCommittee != null && thesisCommittee.length > 0){
+                            ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                            message.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_FOR_ONGOING_THESIS_REGISTRATION.toString());
+                            message.addReceiver(thesisCommittee[0]);
+                            try {
+                                message.setContentObject(chosenThesis);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            myAgent.send(message);
+
+                        } else {
+                            System.out.println("[ERROR] There are no agents with the service that is being searched for.");
+                        }
                     }
 
                 } else if(receivedMessage.getPerformative() == ACLMessage.REJECT_PROPOSAL){
@@ -185,8 +202,6 @@ public class Supervisor1 extends Agent {
         }
     }
 
-
-
     private class ListenAdHocProposals extends CyclicBehaviour {
         private Thesis receivedAdHocThesis;
 
@@ -201,7 +216,7 @@ public class Supervisor1 extends Agent {
             ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
             if (receivedMessage != null){
-                System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received message from "+receivedMessage.getSender().getName());
+                System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received an AD-HOC thesis proposal from Agent:["+receivedMessage.getSender().getLocalName()+"]");
                 try {
                     receivedAdHocThesis = (Thesis) receivedMessage.getContentObject();
                 } catch (UnreadableException e) {
@@ -210,14 +225,38 @@ public class Supervisor1 extends Agent {
                 }
                 ACLMessage reply = receivedMessage.createReply();
                 if (receivedAdHocThesis.getAcademicWorth() > 50) {
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] accepted AD-HOC thesis proposal of Agent: "+
+                            receivedMessage.getSender().getLocalName());
+
+                    // Set the supervisor itself as the supervisor of the adhoc thesis
                     receivedAdHocThesis.setThesisSupervisor(myAgent.getAID());
+                    //Put the thesis into the on going thesis list
                     setOnGoingTheses(receivedMessage.getSender(),receivedAdHocThesis);
+                    System.out.println("[INFO] Agent "+myAgent.getLocalName()+" selected itself as the supervisor the Thesis: "+receivedAdHocThesis.getThesisTitle()+" which will be done by Agent: "+receivedMessage.getSender().getLocalName());
+
+                    // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
                     reply.setContent(SupervisorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
                     myAgent.send(reply);
-                    System.out.println("[INFO] Agent: "+myAgent.getLocalName()+" accepted AD-HOC thesis proposal of Agent: "+
-                            receivedMessage.getSender().getLocalName());
+
+                    // todo: inform thesis committe after registering a thesis as ONGOING
+                    AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
+                    if (thesisCommittee != null && thesisCommittee.length > 0){
+                        ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                        message.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_FOR_ONGOING_THESIS_REGISTRATION.toString());
+                        message.addReceiver(thesisCommittee[0]);
+                        try {
+                            message.setContentObject(receivedAdHocThesis);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        myAgent.send(message);
+
+                    } else {
+                        System.out.println("[ERROR] There are no agents with the service that is being searched for.");
+                    }
+
                 } else {
 
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
@@ -232,6 +271,8 @@ public class Supervisor1 extends Agent {
             }
         }
     }
+
+
     private class ListenThesisCommittee extends CyclicBehaviour{
         private Thesis receivedThesis;
 
