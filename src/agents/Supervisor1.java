@@ -240,7 +240,7 @@ public class Supervisor1 extends Agent {
                     reply.setContent(SupervisorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
                     myAgent.send(reply);
 
-                    // todo: inform thesis committe after registering a thesis as ONGOING
+                    // todo: inform thesis committee after registering a thesis as ONGOING
                     AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
                     if (thesisCommittee != null && thesisCommittee.length > 0){
                         ACLMessage message = new ACLMessage(ACLMessage.INFORM);

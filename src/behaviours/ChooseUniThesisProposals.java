@@ -12,6 +12,7 @@ import utils.Utils;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ChooseUniThesisProposals extends CyclicBehaviour {
     private Map<AID, List<Thesis>> proposalsBySupervisors = new HashMap<>();
@@ -46,16 +47,19 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
                 if (numberOfSupervisors == proposalsBySupervisors.size()){
                     // todo: Fix random picking by creating a gui
                     //randomly pick a supervisor for now
-                    // randomly pick a thesis for now
                     List<AID> keysAsArray = new ArrayList<>(proposalsBySupervisors.keySet());
                     Random r = new Random();
-                    Thesis chosenThesis = Utils.pickRandomThesis(proposalsBySupervisors.get(keysAsArray.get(r.nextInt(keysAsArray.size()))));
+//                    proposalsBySupervisors.get(keysAsArray.get(r.nextInt(keysAsArray.size())));
+                    AID thesisSupervisor = keysAsArray.get(r.nextInt(keysAsArray.size()));
+                    // randomly pick a thesis for now
+                    Thesis chosenThesis = Utils.pickRandomThesis(proposalsBySupervisors.get(thesisSupervisor));
 
                     assert chosenThesis != null;
                     // set the thesisStudent variable of the thesis object to show, who owns the thesis
                     chosenThesis.setThesisStudent(myAgent.getAID());
-                    System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the thesis with the title: "+chosenThesis.getThesisTitle() + " from the received");
+                    System.out.println("\n[INFO] Agent:["+myAgent.getLocalName()+ "] chose the Thesis:["+chosenThesis.getThesisTitle() + "] within all received proposals.");
                     ACLMessage reply = receivedMessage.createReply();
+                    reply.addReceiver(thesisSupervisor);
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.toString());
                     try {
@@ -63,8 +67,22 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("\n[INFO] Agent " +myAgent.getLocalName()+ " sent the chosen thesis proposal with the Title:"+chosenThesis.getThesisTitle()+" to Agent:"+receivedMessage.getSender().getLocalName()+".");
+                    System.out.println("\n[INFO] Agent:[" +myAgent.getLocalName()+ "] sent the chosen thesis proposal with the Title:["+chosenThesis.getThesisTitle()+"] to Agent:"+receivedMessage.getSender().getLocalName()+".");
                     myAgent.send(reply);
+
+                    // todo: after picking one proposal from a supervisor, send rejection messages to other supervisors to inform them
+
+                    ACLMessage message = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
+                    message.setConversationId(ConversationIDs.REJECT_PROPOSAL_IF_NOT_INTERESTED.toString());
+
+                    // Add all the rejected supervisors as receiver
+                    for(AID supervisor: proposalsBySupervisors.keySet()){
+                        if(!supervisor.equals(thesisSupervisor)){
+                            message.addReceiver(supervisor);
+                        }
+                    }
+                    myAgent.send(message);
+
                 } else {
                     System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" is still waiting for all supervisors to send their proposals ");
                 }

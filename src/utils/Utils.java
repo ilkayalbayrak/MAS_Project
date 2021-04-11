@@ -110,7 +110,7 @@ public class Utils {
                         agent.addBehaviour(new ChooseAndContactSupervisor(agent, researchInterest, adhocThesis));
                         agent.addBehaviour(new ListenResponseForAdHocThesis(agent));
                     } else {
-                        System.out.println("[ERROR] Agent "+agent.getLocalName()+": There are no presented AD HOC thesis proposals.");
+                        System.out.println("[ERROR] Agent "+agent.getLocalName()+": There are no presented AD-HOC thesis proposals.");
                     }
 
                     break;
