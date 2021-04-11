@@ -1,5 +1,6 @@
 package agents;
 
+import behaviours.ListenInitialProposalRejections;
 import behaviours.OfferThesisProposals;
 import interfaces.SupervisorMessageContents;
 import interfaces.enums.ConversationIDs;
@@ -115,6 +116,7 @@ public class Supervisor1 extends Agent {
 
         addBehaviour(new OfferThesisProposals(this, proposalList));
         addBehaviour(new HandleThesisAcceptances());
+        addBehaviour(new ListenInitialProposalRejections(this));
         addBehaviour(new ListenAdHocProposals(this));
         addBehaviour(new ListenThesisCommittee(this));
     }
