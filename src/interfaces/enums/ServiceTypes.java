@@ -3,5 +3,6 @@ package interfaces.enums;
 public enum ServiceTypes {
     SUPERVISOR,
     REVIEWER,
-    STUDENT
+    STUDENT,
+    THESIS_COMMITTEE
 }

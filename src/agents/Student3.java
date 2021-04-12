@@ -15,6 +15,11 @@ public class Student3 extends Agent {
     protected void setup() {
         System.out.println("Hello Student3 " + getAID().getName() + " is ready.");
 
+        Object[] args = getArguments();
+        if (args != null && args.length >0){
+            thesisType = (String) args[0];
+            researchInterest = (String) args[1];
+        }
         // the custom thesis that student wants to do
         Thesis adhocThesis = new Thesis();
         adhocThesis.setThesisSupervisor(null);
@@ -25,11 +30,6 @@ public class Student3 extends Agent {
         adhocThesis.setAcademicWorth(67);
         adhocThesis.setThesisStudent(this.getAID());
 
-        Object[] args = getArguments();
-        if (args != null && args.length >0){
-            thesisType = (String) args[0];
-            researchInterest = (String) args[1];
-        }
 
         thesisType = Utils.getThesisTypeArgument(this);
 

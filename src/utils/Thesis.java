@@ -16,7 +16,25 @@ public class Thesis implements Serializable {
     private int academicWorth;
     private AID thesisStudent;
     private AID thesisSupervisor;
+    private AID thesisReviewer;
     private boolean revisedBySupervisor = false;
+    private boolean revisedByReviewer = false;
+
+    public boolean isRevisedByReviewer() {
+        return revisedByReviewer;
+    }
+
+    public void setRevisedByReviewer(boolean revisedByReviewer) {
+        this.revisedByReviewer = revisedByReviewer;
+    }
+
+    public AID getThesisReviewer() {
+        return thesisReviewer;
+    }
+
+    public void setThesisReviewer(AID thesisReviewer) {
+        this.thesisReviewer = thesisReviewer;
+    }
 
     public boolean isRevisedBySupervisor() {
         return revisedBySupervisor;
@@ -25,12 +43,6 @@ public class Thesis implements Serializable {
     public void setRevisedBySupervisor(boolean revisedBySupervisor) {
         this.revisedBySupervisor = revisedBySupervisor;
     }
-//    public Thesis() {
-//
-////        this.thesisSupervisor = null;
-//    }
-
-
 
     public String getThesisType() {
         return thesisType;

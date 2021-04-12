@@ -44,12 +44,13 @@ public class Utils {
 
     // Method for searching agents that offer specified services
     public static DFAgentDescription[] searchServices(Agent agent, String serviceType){
-        DFAgentDescription searchTemplate = new DFAgentDescription();
-        ServiceDescription serviceDescription = new ServiceDescription();
-        serviceDescription.setType(serviceType);
-        searchTemplate.addServices(serviceDescription);
 
         try{
+            DFAgentDescription searchTemplate = new DFAgentDescription();
+            ServiceDescription serviceDescription = new ServiceDescription();
+            serviceDescription.setType(serviceType);
+            searchTemplate.addServices(serviceDescription);
+//            DFAgentDescription[] results =
             return DFService.search(agent, searchTemplate);
         } catch (FIPAException e) {
             System.out.println("[ERROR] Failed to search for agent services.");
@@ -57,6 +58,22 @@ public class Utils {
         }
         return null;
     }
+    // Method for searching agents that offer specified services
+//    public static DFAgentDescription[] searchServices(Agent agent, String serviceType){
+//
+//        try{
+//            DFAgentDescription searchTemplate = new DFAgentDescription();
+//            ServiceDescription serviceDescription = new ServiceDescription();
+//            serviceDescription.setType(serviceType);
+//            searchTemplate.addServices(serviceDescription);
+//            DFAgentDescription[] results = DFService.search(agent, searchTemplate);
+//        } catch (FIPAException e) {
+//            System.out.println("[ERROR] Failed to search for agent services.");
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
+
     // agent is myagent, agents is the agents we are searching for, and service is our search context for the agents
     public static AID[] getAgentList(Agent agent, String service){
         DFAgentDescription[] descriptions = searchServices(agent, service);

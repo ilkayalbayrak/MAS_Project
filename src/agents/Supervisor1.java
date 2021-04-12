@@ -233,6 +233,10 @@ public class Supervisor1 extends Agent {
 
                     // Set the supervisor itself as the supervisor of the adhoc thesis
                     receivedAdHocThesis.setThesisSupervisor(myAgent.getAID());
+
+                    // supervisor revises the the proposal
+                    receivedAdHocThesis.setRevisedBySupervisor(true);
+
                     //Put the thesis into the on going thesis list
                     setOnGoingTheses(receivedMessage.getSender(),receivedAdHocThesis);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] selected itself as the supervisor the Thesis:["+receivedAdHocThesis.getThesisTitle()+"] which will be done by Agent:["+receivedMessage.getSender().getLocalName()+"]");
