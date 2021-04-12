@@ -40,7 +40,6 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
                 e.printStackTrace();
             }
             if (receivedThesis.getAcademicWorth() > 50){
-                System.out.println("INFO ##################### JUST A CHECK ##################"); // this works fine
                 // search and select a supervisor for the chosen thesis
                 // inform the student agent that its external thesis proposal is accepted
                 // inform the selected supervisor
@@ -55,8 +54,8 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
                         e.printStackTrace();
                     }
                     myAgent.send(messageToSupervisor);
-                    System.out.println("[INFO] Agent "+myAgent.getLocalName()+" selected Agent: "+thesisSupervisor[0].getLocalName()+
-                            " as the supervisor the Thesis: "+receivedThesis.getThesisTitle()+" which will be done by Agent: "+receivedMessage.getSender().getLocalName());
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] selected Agent:["+thesisSupervisor[0].getLocalName()+
+                            "] as the supervisor the Thesis:["+receivedThesis.getThesisTitle()+"] which will be done by Agent:["+receivedMessage.getSender().getLocalName()+"]");
                 } else {
                     System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] says: there are no agents that providing the Service:["+receivedThesis.getThesisSubject()+"]");
                 }

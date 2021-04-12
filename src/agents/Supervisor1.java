@@ -164,6 +164,7 @@ public class Supervisor1 extends Agent {
                         myAgent.send(reply);
 
                     } else{
+//                        if()
                         removeProposal(chosenThesis);
                         System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesis.getThesisTitle()+
                                 " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
@@ -218,11 +219,11 @@ public class Supervisor1 extends Agent {
             ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
             if (receivedMessage != null){
-                System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received an AD-HOC thesis proposal from Agent:["+receivedMessage.getSender().getLocalName()+"]");
+                System.out.println("[INFO] Agent:["+myAgent.getLocalName() +"] received an AD-HOC thesis proposal from Agent:["+receivedMessage.getSender().getLocalName()+"]");
                 try {
                     receivedAdHocThesis = (Thesis) receivedMessage.getContentObject();
                 } catch (UnreadableException e) {
-                    System.out.println("[ERROR] Agent: "+myAgent.getLocalName()+" could not read the contents of the message received from Agent: "+receivedMessage.getSender().getLocalName());
+                    System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] could not read the contents of the message received from Agent: "+receivedMessage.getSender().getLocalName());
                     e.printStackTrace();
                 }
                 ACLMessage reply = receivedMessage.createReply();
@@ -234,7 +235,7 @@ public class Supervisor1 extends Agent {
                     receivedAdHocThesis.setThesisSupervisor(myAgent.getAID());
                     //Put the thesis into the on going thesis list
                     setOnGoingTheses(receivedMessage.getSender(),receivedAdHocThesis);
-                    System.out.println("[INFO] Agent "+myAgent.getLocalName()+" selected itself as the supervisor the Thesis: "+receivedAdHocThesis.getThesisTitle()+" which will be done by Agent: "+receivedMessage.getSender().getLocalName());
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] selected itself as the supervisor the Thesis:["+receivedAdHocThesis.getThesisTitle()+"] which will be done by Agent:["+receivedMessage.getSender().getLocalName()+"]");
 
                     // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
@@ -290,7 +291,7 @@ public class Supervisor1 extends Agent {
             ACLMessage receivedMessage = myAgent.receive(mtExternalThesis);
 
             if (receivedMessage != null ){
-                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## MESSAGG E IS NOT NUUUUUULLLLLLLLL");
+//                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## MESSAGG E IS NOT NUUUUUULLLLLLLLL");
                 //Get the external TH proposal from the msg content
 //                Thesis receivedThesis = null;
                 try {
@@ -300,18 +301,18 @@ public class Supervisor1 extends Agent {
                     e.printStackTrace();
                 }
                 if (receivedThesis != null){
-                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NOT NUUUUUULLLLLLLLL");
+//                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NOT NUUUUUULLLLLLLLL");
                     // Revise the received thesis proposal before placing it into the "ongoing thesis" bucket
                     receivedThesis.setRevisedBySupervisor(true);
 
                     // put the thesis into on going thesis list
                     AID student = receivedThesis.getThesisStudent();
                     setOnGoingTheses(student, receivedThesis);
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] revised the Thesis:["+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+"], and set it to ON_GOING");
 
-                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
 
                 }else {
-                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NUUUUUULLLLLLLLL sssssssssssssssssssoooooooooooorrrrrrrrrrrrrrrrrryyyyyyyyyyy");
+                    System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] says: Received thesis is NULL.");
                 }
 
 

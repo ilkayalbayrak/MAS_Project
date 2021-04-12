@@ -58,31 +58,30 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
                     // set the thesisStudent variable of the thesis object to show, who owns the thesis
                     chosenThesis.setThesisStudent(myAgent.getAID());
                     System.out.println("\n[INFO] Agent:["+myAgent.getLocalName()+ "] chose the Thesis:["+chosenThesis.getThesisTitle() + "] within all received proposals.");
-                    ACLMessage reply = receivedMessage.createReply();
-                    reply.addReceiver(thesisSupervisor);
-                    reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                    reply.setConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.toString());
+                    ACLMessage acceptanceMessage = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
+                    acceptanceMessage.addReceiver(thesisSupervisor);
+                    acceptanceMessage.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+                    acceptanceMessage.setConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.toString());
                     try {
-                        reply.setContentObject(chosenThesis);
+                        acceptanceMessage.setContentObject(chosenThesis);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     System.out.println("\n[INFO] Agent:[" +myAgent.getLocalName()+ "] sent the chosen thesis proposal with the Title:["+chosenThesis.getThesisTitle()+"] to Agent:"+receivedMessage.getSender().getLocalName()+".");
-                    myAgent.send(reply);
+                    myAgent.send(acceptanceMessage);
 
                     // todo: after picking one proposal from a supervisor, send rejection messages to other supervisors to inform them
 
-                    ACLMessage message = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
-                    message.setConversationId(ConversationIDs.REJECT_PROPOSAL_IF_NOT_INTERESTED.toString());
+                    ACLMessage rejectionMessage = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
+                    rejectionMessage.setConversationId(ConversationIDs.REJECT_PROPOSAL_IF_NOT_INTERESTED.toString());
 
                     // Add all the rejected supervisors as receiver
                     for(AID supervisor: proposalsBySupervisors.keySet()){
                         if(!supervisor.equals(thesisSupervisor)){
-                            message.addReceiver(supervisor);
+                            rejectionMessage.addReceiver(supervisor);
                         }
                     }
-                    myAgent.send(message);
-
+                    myAgent.send(rejectionMessage);
                 } else {
                     System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" is still waiting for all supervisors to send their proposals ");
                 }

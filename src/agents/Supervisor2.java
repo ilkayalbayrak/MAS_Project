@@ -293,7 +293,6 @@ public class Supervisor2 extends Agent {
             ACLMessage receivedMessage = myAgent.receive(mtExternalThesis);
 
             if (receivedMessage != null ){
-                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## MESSAGG E IS NOT NUUUUUULLLLLLLLL");
                 //Get the external TH proposal from the msg content
 //                Thesis receivedThesis = null;
                 try {
@@ -303,7 +302,6 @@ public class Supervisor2 extends Agent {
                     e.printStackTrace();
                 }
                 if (receivedThesis != null){
-                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NOT NUUUUUULLLLLLLLL");
                     // Revise the received thesis proposal before placing it into the "ongoing thesis" bucket
                     receivedThesis.setRevisedBySupervisor(true);
 
@@ -314,7 +312,9 @@ public class Supervisor2 extends Agent {
                     System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
 
                 }else {
-                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NUUUUUULLLLLLLLL sssssssssssssssssssoooooooooooorrrrrrrrrrrrrrrrrryyyyyyyyyyy");
+//                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NUUUUUULLLLLLLLL sssssssssssssssssssoooooooooooorrrrrrrrrrrrrrrrrryyyyyyyyyyy");
+                    System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] says: Received thesis is NULL.");
+
                 }
 
 

@@ -31,7 +31,6 @@ public class ChooseExternalThesisProposal extends CyclicBehaviour {
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
         if (receivedMessage != null){
-            System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received message from "+receivedMessage.getSender().getName());
 
             try{
                 receivedProposals = (List<Thesis>) receivedMessage.getContentObject();
@@ -40,15 +39,13 @@ public class ChooseExternalThesisProposal extends CyclicBehaviour {
                 e.printStackTrace();
             }
 
-            System.out.println("\n[INFO] Agent:"+myAgent.getLocalName()+" received a reply from Agent:"+ receivedMessage.getSender().getLocalName() + " that contains thesis proposals: \n");
+            System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" received a reply from Agent:"+ receivedMessage.getSender().getLocalName() + " that contains EXTERNAL thesis proposals.");
             // randomly pick a thesis for now
             Thesis chosenThesis = Utils.pickRandomThesis(receivedProposals);
 
             // register the student agent to the thesis object
             assert chosenThesis != null;
             chosenThesis.setThesisStudent(myAgent.getAID());
-            System.out.println("\n[INFO] Agent "+myAgent.getLocalName()+ " chose the EXTERNAL thesis with the title: "+chosenThesis.getThesisTitle());
-
             ACLMessage reply = receivedMessage.createReply();
             reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
             try {
@@ -59,7 +56,8 @@ public class ChooseExternalThesisProposal extends CyclicBehaviour {
             reply.addReplyTo(receivedMessage.getSender());
 //            receivedProposals.get(chosenThesisTitle);
 
-            System.out.println("\n[INFO] Agent " +myAgent.getLocalName()+ " sent the chosen thesis title to its company.");
+            System.out.println("\n[INFO] Agent:["+myAgent.getLocalName()+ "] chose the EXTERNAL Thesis:["+chosenThesis.getThesisTitle()+"] and informed the collaborating company about its decision.");
+
             myAgent.send(reply);
 
             // todo: inform the thesis committee about chosen external thesis
