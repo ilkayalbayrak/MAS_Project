@@ -117,6 +117,7 @@ public class Utils {
                     // then ask Thesis committee if that is acceptable
                     agent.addBehaviour(new RequestExternalThesisProposals(agent));
                     agent.addBehaviour(new ChooseExternalThesisProposal(agent));
+                    agent.addBehaviour(new ListenIfExternalProposalAccepted(agent));
                     break;
                 case "AD_HOC":
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the AD_HOC TH path ");

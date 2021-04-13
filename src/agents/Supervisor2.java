@@ -2,7 +2,7 @@ package agents;
 
 import behaviours.ListenInitialProposalRejections;
 import behaviours.OfferThesisProposals;
-import interfaces.SupervisorMessageContents;
+import interfaces.ProfessorMessageContents;
 import interfaces.enums.ConversationIDs;
 import interfaces.enums.ThesisMainSubjects;
 import interfaces.enums.ThesisTypes;
@@ -16,7 +16,6 @@ import utils.Aulaweb;
 import utils.Thesis;
 import utils.Utils;
 
-import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -261,7 +260,7 @@ public class Supervisor2 extends Agent {
                     // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
-                    reply.setContent(SupervisorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
+                    reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
                     myAgent.send(reply);
 
                     // todo: inform thesis committee after registering a thesis as ONGOING
@@ -285,7 +284,7 @@ public class Supervisor2 extends Agent {
 
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
-                    reply.setContent(SupervisorMessageContents.AD_HOC_THESIS_PROPOSAL_REJECTED);
+                    reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_REJECTED);
                     myAgent.send(reply);
                     System.out.println("[INFO] Agent: "+myAgent.getLocalName()+" rejected AD-HOC thesis proposal of Agent: "+
                             receivedMessage.getSender().getLocalName());

@@ -51,27 +51,27 @@ public class ResearchCenterOrCompany extends Agent {
         thesis1.setThesisStudent(null);
         thesis1.setThesisType(ThesisTypes.EXTERNAL.toString());
         thesis1.setThesisTitle("External_Thesis1");
-        thesis1.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
+        thesis1.setThesisSubject(ThesisMainSubjects.COMPUTER_VISION.toString());
         thesis1.setThesisInfo("Some imaginary info about a research topic within the borders of External");
-        thesis1.setAcademicWorth(90);
+        thesis1.setAcademicWorth(43);
 
         Thesis thesis2 = new Thesis();
         thesis2.setThesisSupervisor(this.getAID());
         thesis2.setThesisStudent(null);
         thesis2.setThesisType(ThesisTypes.EXTERNAL.toString());
         thesis2.setThesisTitle("External_Thesis2");
-        thesis2.setThesisSubject(ThesisMainSubjects.MACHINE_LEARNING.toString());
+        thesis2.setThesisSubject(ThesisMainSubjects.MULTI_AGENT_SYSTEMS.toString());
         thesis2.setThesisInfo("Some imaginary info about a research topic within the borders of External");
-        thesis2.setAcademicWorth(100);
+        thesis2.setAcademicWorth(47);
 
         Thesis thesis3 = new Thesis();
         thesis3.setThesisSupervisor(this.getAID());
         thesis3.setThesisStudent(null);
         thesis3.setThesisType(ThesisTypes.EXTERNAL.toString());
         thesis3.setThesisTitle("External_Thesis3");
-        thesis3.setThesisSubject(ThesisMainSubjects.NATURAL_LANGUAGE_PROCESSING.toString());
+        thesis3.setThesisSubject(ThesisMainSubjects.SPEECH_PROCESSING_AND_RECOGNITION.toString());
         thesis3.setThesisInfo("Some imaginary info about a research topic within the borders of External");
-        thesis3.setAcademicWorth(75);
+        thesis3.setAcademicWorth(100);
 
         Thesis thesis4 = new Thesis();
         thesis4.setThesisSupervisor(this.getAID());
@@ -89,7 +89,7 @@ public class ResearchCenterOrCompany extends Agent {
         thesis5.setThesisTitle("External_Thesis5");
         thesis5.setThesisSubject(ThesisMainSubjects.MACHINE_LEARNING.toString());
         thesis5.setThesisInfo("Some imaginary info about a research topic within the borders of External");
-        thesis5.setAcademicWorth(80);
+        thesis5.setAcademicWorth(35);
 
         companyThesisList.add(thesis1);
         companyThesisList.add(thesis2);

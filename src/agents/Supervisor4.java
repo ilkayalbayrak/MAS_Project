@@ -2,7 +2,7 @@ package agents;
 
 import behaviours.ListenInitialProposalRejections;
 import behaviours.OfferThesisProposals;
-import interfaces.SupervisorMessageContents;
+import interfaces.ProfessorMessageContents;
 import interfaces.enums.ConversationIDs;
 import interfaces.enums.ThesisMainSubjects;
 import interfaces.enums.ThesisTypes;
@@ -56,7 +56,7 @@ public class Supervisor4 extends Agent {
         thesis1.setThesisTitle("CV_Thesis1");
         thesis1.setThesisSubject(ThesisMainSubjects.COMPUTER_VISION.toString());
         thesis1.setThesisInfo("Some imaginary info about a research topic within the borders of CV");
-        thesis1.setAcademicWorth(90);
+        thesis1.setAcademicWorth(100);
         thesis1.setRevisedBySupervisor(true);
 
         Thesis thesis2 = new Thesis();
@@ -66,7 +66,7 @@ public class Supervisor4 extends Agent {
         thesis2.setThesisTitle("CV_Thesis2");
         thesis2.setThesisSubject(ThesisMainSubjects.COMPUTER_VISION.toString());
         thesis2.setThesisInfo("Some imaginary info about a research topic within the borders of CV");
-        thesis2.setAcademicWorth(100);
+        thesis2.setAcademicWorth(99);
         thesis2.setRevisedBySupervisor(true);
 
         Thesis thesis3 = new Thesis();
@@ -76,7 +76,7 @@ public class Supervisor4 extends Agent {
         thesis3.setThesisTitle("CV_Thesis3");
         thesis3.setThesisSubject(ThesisMainSubjects.COMPUTER_VISION.toString());
         thesis3.setThesisInfo("Some imaginary info about a research topic within the borders of CV");
-        thesis3.setAcademicWorth(75);
+        thesis3.setAcademicWorth(77);
         thesis3.setRevisedBySupervisor(true);
 
         Thesis thesis4 = new Thesis();
@@ -86,7 +86,7 @@ public class Supervisor4 extends Agent {
         thesis4.setThesisTitle("CV_Thesis4");
         thesis4.setThesisSubject(ThesisMainSubjects.COMPUTER_VISION.toString());
         thesis4.setThesisInfo("Some imaginary info about a research topic within the borders of CV");
-        thesis4.setAcademicWorth(87);
+        thesis4.setAcademicWorth(61);
         thesis4.setRevisedBySupervisor(true);
 
         Thesis thesis5 = new Thesis();
@@ -96,7 +96,7 @@ public class Supervisor4 extends Agent {
         thesis5.setThesisTitle("CV_Thesis5");
         thesis5.setThesisSubject(ThesisMainSubjects.COMPUTER_VISION.toString());
         thesis5.setThesisInfo("Some imaginary info about a research topic within the borders of CV");
-        thesis5.setAcademicWorth(80);
+        thesis5.setAcademicWorth(85);
         thesis5.setRevisedBySupervisor(true);
 
         proposalList.add(thesis1);
@@ -262,7 +262,7 @@ public class Supervisor4 extends Agent {
                     // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
-                    reply.setContent(SupervisorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
+                    reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
                     myAgent.send(reply);
 
                     // todo: inform thesis committee after registering a thesis as ONGOING
@@ -286,7 +286,7 @@ public class Supervisor4 extends Agent {
 
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
-                    reply.setContent(SupervisorMessageContents.AD_HOC_THESIS_PROPOSAL_REJECTED);
+                    reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_REJECTED);
                     myAgent.send(reply);
                     System.out.println("[INFO] Agent: "+myAgent.getLocalName()+" rejected AD-HOC thesis proposal of Agent: "+
                             receivedMessage.getSender().getLocalName());

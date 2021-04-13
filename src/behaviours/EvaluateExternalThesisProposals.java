@@ -1,6 +1,7 @@
 package behaviours;
 
 import agents.ThesisCommittee;
+import interfaces.ProfessorMessageContents;
 import interfaces.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
 import jade.core.AID;
@@ -34,7 +35,7 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
             System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received info about an EXTERNAL thesis from Agent:["+receivedMessage.getSender().getLocalName()+"]");
             try {
                 receivedThesis = (Thesis) receivedMessage.getContentObject();
-                System.out.println("[INFO] Received EXTERNAL Thesis:[" + receivedThesis.getThesisTitle()+"] Course:["+receivedThesis.getThesisSubject()+"]");
+//                System.out.println("[INFO] Received EXTERNAL Thesis:[" + receivedThesis.getThesisTitle()+"] Course:["+receivedThesis.getThesisSubject()+"]");
             } catch (UnreadableException e) {
                 System.out.println("[ERROR] Agent "+myAgent.getLocalName()+" could not read the contents of the message coming from Agent: "+receivedMessage.getSender().getLocalName());
                 e.printStackTrace();
@@ -43,6 +44,10 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
                 // search and select a supervisor for the chosen thesis
                 // inform the student agent that its external thesis proposal is accepted
                 // inform the selected supervisor
+
+                System.out.println("[INFO] Agent "+myAgent.getLocalName()+" accepted the external thesis proposal of Agent:["+receivedMessage.getSender().getLocalName()+
+                        "], since the proposal was academically sufficient");
+
                 AID[] thesisSupervisor = Utils.getAgentList(myAgent, receivedThesis.getThesisSubject().toString());
                 if(thesisSupervisor != null && thesisSupervisor.length > 0){
                     ACLMessage messageToSupervisor = new ACLMessage(ACLMessage.INFORM);
@@ -65,8 +70,9 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
                 // inform the student agent that its external thesis proposal is not accepted
                 ACLMessage message = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
                 message.addReceiver(receivedMessage.getSender());
-                message.setContent(StudentMessageContents.REJECT_EXTERNAL_THESIS_PROPOSAL);
-                System.out.println("[INFO] Agent "+myAgent.getLocalName()+" rejected the external thesis proposal of Agent: "+receivedMessage.getSender().getLocalName());
+                message.setContent(ProfessorMessageContents.EXTERNAL_THESIS_PROPOSAL_REJECTED);
+                System.out.println("[INFO] Agent "+myAgent.getLocalName()+" rejected the external thesis proposal of Agent:["+receivedMessage.getSender().getLocalName()+
+                        "] because if was not academically sufficient");
                 myAgent.send(message);
             }
 
