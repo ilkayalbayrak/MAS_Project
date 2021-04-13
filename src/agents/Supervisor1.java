@@ -255,7 +255,7 @@ public class Supervisor1 extends Agent {
                     Aulaweb aulaweb = Aulaweb.getInstance();
                     aulaweb.addONGOING_THESES(receivedMessage.getSender(),receivedAdHocThesis);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] selected itself as the supervisor the Thesis:["+receivedAdHocThesis.getThesisTitle()+"] which will be done by Agent:["+receivedMessage.getSender().getLocalName()+"]");
-                    System.out.println("\n\n\n\n\n"+aulaweb.getONGOING_THESES()+"\n\n\n\n\n");
+//                    System.out.println("\n\n\n\n\n"+aulaweb.getONGOING_THESES()+"\n\n\n\n\n");
 
                     // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);

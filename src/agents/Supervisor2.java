@@ -12,6 +12,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
+import utils.Aulaweb;
 import utils.Thesis;
 import utils.Utils;
 
@@ -149,32 +150,43 @@ public class Supervisor2 extends Agent {
                         System.out.println("[ERROR] Agent "+ myAgent.getLocalName()+ " could not extract the proposals object from message");
                         e.printStackTrace();
                     }
+
                     assert chosenThesis != null;
+
+                    // get instance of Aulaweb class to get ONGOING THESES
+                    Aulaweb aulaweb = Aulaweb.getInstance();
+
                     // todo: Check if the chosen thesis is already in the ON GOING theses list
-                    // if the chosen title already been picked send AVAILABLE proposals so the agent can pick one of them
-                    if (getOnGoingThesesList().containsValue(chosenThesis)){
+
+                    // if the chosen title already been picked, send the AVAILABLE proposals so the agent can pick another thesis proposal
+                    if (aulaweb.getONGOING_THESES().containsValue(chosenThesis)){
                         System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] says: Thesis:["+chosenThesis.getThesisTitle()+"] has already been chosen by another agent and informs the Agent:["+receivedMessage.getSender().getLocalName()+"] about the situation.");
+
                         ACLMessage reply = receivedMessage.createReply();
                         reply.setPerformative(ACLMessage.INFORM);
                         reply.setConversationId(ConversationIDs.THESIS_ALREADY_BEEN_PICKED.toString());
+
                         try {
                             reply.setContentObject((Serializable) getProposalList());
                         } catch (IOException e) {
                             System.out.println("\n[ERROR] Agent:["+ myAgent.getLocalName() +"] Failed to serialize its proposalList object.");
                             e.printStackTrace();
                         }
+
                         myAgent.send(reply);
 
                     } else{
+                        // if the chosen thesis has not been already picked by another student agent
+                        // add the thesis on the Aulaweb ONGOING THESES list
+                        // Then remove the chosen thesis from the personal proposal offerings of the supervisor agent
                         removeProposal(chosenThesis);
                         System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesis.getThesisTitle()+
                                 " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
 
                         AID student = chosenThesis.getThesisStudent();
-                        setOnGoingTheses(student,chosenThesis);
+                        aulaweb.addONGOING_THESES(student,chosenThesis);
                         System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+chosenThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
 
-                        // todo: Message code is too redundant , may be create some functions for them
                         // todo: inform thesis committe after registering a thesis as ONGOING
                         AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
                         if (thesisCommittee != null && thesisCommittee.length > 0){
@@ -221,11 +233,11 @@ public class Supervisor2 extends Agent {
             ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
             if (receivedMessage != null){
-                System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received an AD-HOC thesis proposal from Agent:["+receivedMessage.getSender().getLocalName()+"]");
+                System.out.println("[INFO] Agent:["+myAgent.getLocalName() +"] received an AD-HOC thesis proposal from Agent:["+receivedMessage.getSender().getLocalName()+"]");
                 try {
                     receivedAdHocThesis = (Thesis) receivedMessage.getContentObject();
                 } catch (UnreadableException e) {
-                    System.out.println("[ERROR] Agent: "+myAgent.getLocalName()+" could not read the contents of the message received from Agent: "+receivedMessage.getSender().getLocalName());
+                    System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] could not read the contents of the message received from Agent: "+receivedMessage.getSender().getLocalName());
                     e.printStackTrace();
                 }
                 ACLMessage reply = receivedMessage.createReply();
@@ -240,8 +252,11 @@ public class Supervisor2 extends Agent {
                     receivedAdHocThesis.setRevisedBySupervisor(true);
 
                     //Put the thesis into the on going thesis list
-                    setOnGoingTheses(receivedMessage.getSender(),receivedAdHocThesis);
-                    System.out.println("[INFO] Agent "+myAgent.getLocalName()+" selected itself as the supervisor the Thesis: "+receivedAdHocThesis.getThesisTitle()+" which will be done by Agent: "+receivedMessage.getSender().getLocalName());
+
+                    Aulaweb aulaweb = Aulaweb.getInstance();
+                    aulaweb.addONGOING_THESES(receivedMessage.getSender(),receivedAdHocThesis);
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] selected itself as the supervisor the Thesis:["+receivedAdHocThesis.getThesisTitle()+"] which will be done by Agent:["+receivedMessage.getSender().getLocalName()+"]");
+//                    System.out.println("\n\n\n\n\n"+aulaweb.getONGOING_THESES()+"\n\n\n\n\n");
 
                     // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
@@ -249,7 +264,7 @@ public class Supervisor2 extends Agent {
                     reply.setContent(SupervisorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
                     myAgent.send(reply);
 
-                    // todo: inform thesis committe after registering a thesis as ONGOING
+                    // todo: inform thesis committee after registering a thesis as ONGOING
                     AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
                     if (thesisCommittee != null && thesisCommittee.length > 0){
                         ACLMessage message = new ACLMessage(ACLMessage.INFORM);
@@ -297,6 +312,7 @@ public class Supervisor2 extends Agent {
             ACLMessage receivedMessage = myAgent.receive(mtExternalThesis);
 
             if (receivedMessage != null ){
+//                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## MESSAGG E IS NOT NUUUUUULLLLLLLLL");
                 //Get the external TH proposal from the msg content
 //                Thesis receivedThesis = null;
                 try {
@@ -306,25 +322,28 @@ public class Supervisor2 extends Agent {
                     e.printStackTrace();
                 }
                 if (receivedThesis != null){
+//                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NOT NUUUUUULLLLLLLLL");
                     // Revise the received thesis proposal before placing it into the "ongoing thesis" bucket
                     receivedThesis.setRevisedBySupervisor(true);
 
                     // put the thesis into on going thesis list
+                    Aulaweb aulaweb = Aulaweb.getInstance();
                     AID student = receivedThesis.getThesisStudent();
-                    setOnGoingTheses(student, receivedThesis);
 
-                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
+                    assert student != null;
+                    aulaweb.addONGOING_THESES(student, receivedThesis);
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] revised the Thesis:["+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+"], and set it to ON_GOING");
+
 
                 }else {
-//                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NUUUUUULLLLLLLLL sssssssssssssssssssoooooooooooorrrrrrrrrrrrrrrrrryyyyyyyyyyy");
                     System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] says: Received thesis is NULL.");
-
                 }
 
 
-                }else {
+            }else {
                 block();
             }
+
         }
     }
 }

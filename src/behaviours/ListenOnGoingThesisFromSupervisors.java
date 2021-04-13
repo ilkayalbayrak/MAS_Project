@@ -10,6 +10,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
+import utils.Aulaweb;
 import utils.Thesis;
 import utils.Utils;
 
@@ -54,6 +55,16 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
             // assign the reviewer to the thesis
             onGoingRegisteredThesis.setThesisReviewer(reviewer[0]);
 
+            // Update the ONGOING THESES list ON AULAWEB after adding a REVIEWER for the thesis
+            Aulaweb aulaweb = Aulaweb.getInstance();
+            // onGoingRegisteredThesis is a slightly modified version(Added a Reviewer on line 56) of a Thesis obj that should be already exist in Aulaweb
+            // now we are only updating it to the Reviewer added version
+            if (aulaweb.getONGOING_THESES().containsKey(onGoingRegisteredThesis.getThesisStudent())){
+                aulaweb.addONGOING_THESES(onGoingRegisteredThesis.getThesisStudent(), onGoingRegisteredThesis);
+            }else {
+                System.out.println("[ERROR] Agent:["+onGoingRegisteredThesis.getThesisStudent()+"] does not exist on AULAWEB ONGOING THESES, but it should have.");
+            }
+
             // inform reviewer about the thesis
             ACLMessage messageToReviewer = new ACLMessage(ACLMessage.INFORM);
             messageToReviewer.addReceiver(reviewer[0]);
@@ -86,6 +97,12 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+//
+//            System.out.println("\n\n\n\n\n");
+//            aulaweb.getONGOING_THESES().entrySet().forEach(entry -> {
+//                System.out.println(entry.getKey() + " " + entry.getValue());
+//            });
+//            System.out.println("\n\n\n\n\n");
             myAgent.send(messageToSupervisor);
 
         }else {

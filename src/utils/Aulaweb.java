@@ -20,6 +20,16 @@ public final class Aulaweb implements Serializable {
         return ONGOING_THESES;
     }
 
+    public void removeONGOING_THESES(Thesis thesis){
+        this.ONGOING_THESES.remove(thesis);
+    }
+
+    public void updateONGOING_THESES(AID student, Thesis thesis){
+        if(this.getONGOING_THESES().containsValue(thesis)){
+
+        }
+    }
+
     public void addONGOING_THESES(AID student, Thesis thesis) {
 //        if ()
         this.ONGOING_THESES.put(student, thesis);
