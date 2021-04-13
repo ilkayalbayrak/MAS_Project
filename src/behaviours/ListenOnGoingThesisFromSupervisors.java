@@ -70,14 +70,14 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
             messageToStudent.setConversationId(ConversationIDs.WHO_IS_YOUR_THESIS_REVIEWER.toString());
             messageToStudent.addReceiver(onGoingRegisteredThesis.getThesisStudent());
             // todo: Do I need to send anything ??
-//            messageToStudent.setContentObject();
             try {
                 messageToStudent.setContentObject(onGoingRegisteredThesis);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             myAgent.send(messageToStudent);
-            // todo: catch the msg to supervisor and reset the ongoing thesis
+
+            // todo: catch the msg to supervisor and reset the ongoing thesis on supervisor agent
             ACLMessage messageToSupervisor = new ACLMessage(ACLMessage.INFORM);
             messageToSupervisor.setConversationId(ConversationIDs.WHO_IS_YOUR_THESIS_REVIEWER.toString());
             messageToSupervisor.addReceiver(onGoingRegisteredThesis.getThesisSupervisor());
