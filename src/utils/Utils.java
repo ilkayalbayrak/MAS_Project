@@ -126,7 +126,7 @@ public class Utils {
                     // student and supervisor come to an agreement whether the thesis is OK or not
                     if (adhocThesis !=null){
                         agent.addBehaviour(new ChooseAndContactSupervisor(agent, researchInterest, adhocThesis));
-                        agent.addBehaviour(new ListenResponseForAdHocThesis(agent));
+                        agent.addBehaviour(new ListenResponseForAdHocThesis(agent, adhocThesis));
                     } else {
                         System.out.println("[ERROR] Agent "+agent.getLocalName()+": There are no presented AD-HOC thesis proposals.");
                     }

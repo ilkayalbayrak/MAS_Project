@@ -11,6 +11,7 @@ import utils.Thesis;
 import utils.Utils;
 
 import java.io.IOException;
+import java.security.spec.RSAOtherPrimeInfo;
 
 public class ChooseAndContactSupervisor extends OneShotBehaviour {
     private String researchInterest;
@@ -19,6 +20,19 @@ public class ChooseAndContactSupervisor extends OneShotBehaviour {
         super(agent);
         this.researchInterest = researchInterest;
         this.adhocThesis = adhocThesis;
+    }
+
+//    @Override
+//    public void reset() {
+//        super.reset();
+//    }
+
+    @Override
+    public void onStart() {
+        long restartCount = getRestartCounter();
+        System.out.println("\n\n\n\n\n\n");
+        System.out.println("########################################################### RESTART COUNT == == == = "+restartCount);
+        System.out.println("\n\n\n\n\n\n");
     }
 
     @Override

@@ -109,7 +109,7 @@ public class Supervisor4 extends Agent {
 
 
     protected void setup(){
-        System.out.println("Hello Supervisor1 " + getAID().getName() + " is ready.");
+        System.out.println("Hello Supervisor4 " + getAID().getName() + " is ready.");
         // Available thesis proposals of the supervisor
         initThesisProposals();
 
@@ -220,6 +220,7 @@ public class Supervisor4 extends Agent {
         }
     }
 
+
     private class ListenAdHocProposals extends CyclicBehaviour {
         private Thesis receivedAdHocThesis;
 
@@ -261,7 +262,7 @@ public class Supervisor4 extends Agent {
 
                     // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                    reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
+                    reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString());
                     reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
                     myAgent.send(reply);
 
@@ -285,7 +286,7 @@ public class Supervisor4 extends Agent {
                 } else {
 
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
-                    reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
+                    reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString());
                     reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_REJECTED);
                     myAgent.send(reply);
                     System.out.println("[INFO] Agent: "+myAgent.getLocalName()+" rejected AD-HOC thesis proposal of Agent: "+

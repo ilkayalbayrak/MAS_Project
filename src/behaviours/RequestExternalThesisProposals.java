@@ -16,6 +16,12 @@ public class RequestExternalThesisProposals extends OneShotBehaviour {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        reset();
+    }
+
+    @Override
     public void action() {
         AID[] companyOrResearchCenters = Utils.getAgentList(myAgent, "company");
         if(companyOrResearchCenters != null && companyOrResearchCenters.length > 0){

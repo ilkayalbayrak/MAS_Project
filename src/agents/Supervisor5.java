@@ -8,6 +8,7 @@ import interfaces.enums.ThesisMainSubjects;
 import interfaces.enums.ThesisTypes;
 import jade.core.AID;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -109,7 +110,7 @@ public class Supervisor5 extends Agent {
 
 
     protected void setup(){
-        System.out.println("Hello Supervisor1 " + getAID().getName() + " is ready.");
+        System.out.println("Hello Supervisor5 " + getAID().getName() + " is ready.");
         // Available thesis proposals of the supervisor
         initThesisProposals();
 
@@ -118,11 +119,15 @@ public class Supervisor5 extends Agent {
         String[] serviceNames = {"professor","professor_SPR"};
         Utils.registerService(this, serviceTypes, serviceNames);
 
-        addBehaviour(new OfferThesisProposals(this, proposalList));
+        Behaviour offerThesisProposals = new OfferThesisProposals(this, proposalList);
+        addBehaviour(offerThesisProposals);
         addBehaviour(new HandleThesisAcceptances());
         addBehaviour(new ListenInitialProposalRejections(this));
         addBehaviour(new ListenAdHocProposals(this));
         addBehaviour(new ListenThesisCommittee(this));
+//        removeBehaviour(offerThesisProposals);
+//        removeBehaviour(this.HandleThesisAcceptances());
+//        removeBehaviour(OfferThesisProposals);
     }
 
     protected void takeDown(){
@@ -220,6 +225,7 @@ public class Supervisor5 extends Agent {
         }
     }
 
+
     private class ListenAdHocProposals extends CyclicBehaviour {
         private Thesis receivedAdHocThesis;
 
@@ -261,7 +267,7 @@ public class Supervisor5 extends Agent {
 
                     // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                    reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
+                    reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString());
                     reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
                     myAgent.send(reply);
 
@@ -285,7 +291,7 @@ public class Supervisor5 extends Agent {
                 } else {
 
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
-                    reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString()+receivedMessage.getSender().getLocalName());
+                    reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString());
                     reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_REJECTED);
                     myAgent.send(reply);
                     System.out.println("[INFO] Agent: "+myAgent.getLocalName()+" rejected AD-HOC thesis proposal of Agent: "+

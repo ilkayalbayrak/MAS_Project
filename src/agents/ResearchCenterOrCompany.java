@@ -53,7 +53,7 @@ public class ResearchCenterOrCompany extends Agent {
         thesis1.setThesisTitle("External_Thesis1");
         thesis1.setThesisSubject(ThesisMainSubjects.COMPUTER_VISION.toString());
         thesis1.setThesisInfo("Some imaginary info about a research topic within the borders of External");
-        thesis1.setAcademicWorth(43);
+        thesis1.setAcademicWorth(60);
 
         Thesis thesis2 = new Thesis();
         thesis2.setThesisSupervisor(this.getAID());

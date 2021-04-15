@@ -25,6 +25,12 @@ public class ChooseExternalThesisProposal extends CyclicBehaviour {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        reset();
+    }
+
+    @Override
     public void action() {
         MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.ASK_COMPANY_PROPOSALS.name()+myAgent.getLocalName()),
                 MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));

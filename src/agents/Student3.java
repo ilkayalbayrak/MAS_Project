@@ -27,7 +27,7 @@ public class Student3 extends Agent {
         adhocThesis.setThesisTitle("AD_HOC_Thesis_1");
         adhocThesis.setThesisSubject(researchInterest);
         adhocThesis.setThesisInfo("Some random thesis INFO");
-        adhocThesis.setAcademicWorth(67);
+        adhocThesis.setAcademicWorth(31);
         adhocThesis.setThesisStudent(this.getAID());
 
 

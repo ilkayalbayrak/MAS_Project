@@ -15,6 +15,7 @@ public class ThesisCommittee extends Agent {
 
         Utils.registerService(this, serviceTypes, serviceNames);
 
+//        this.setGenerateBehaviourEvents();
         addBehaviour(new EvaluateExternalThesisProposals(this));
         addBehaviour(new ListenOnGoingThesisFromSupervisors(this));
     }
