@@ -36,15 +36,18 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
                 try {
                     receivedProposals = (List<Thesis>) receivedMessage.getContentObject();
                 } catch (UnreadableException e) {
+                    System.out.println("[ERROR] Agent:["+ myAgent.getLocalName()+ "] could not extract the proposals object from message");
                     e.printStackTrace();
                 }
 
                 //
                 proposalsBySupervisors.put(receivedMessage.getSender(),receivedProposals);
-                System.out.println("\n[INFO] Agent:"+myAgent.getLocalName()+" received a reply from Agent:"+ receivedMessage.getSender().getLocalName() + " that contains thesis proposals.");
-
+//                System.out.println("\n[INFO] Agent:"+myAgent.getLocalName()+" received a reply from Agent:["+ receivedMessage.getSender().getLocalName() + "] that contains thesis proposals.");
                 // Check if all active supervisors sent their proposal lists
                 if (numberOfSupervisors == proposalsBySupervisors.size()){
+                    // Print out a msg when all supervisors sent their proposals
+                    System.out.println("\n[INFO] Agent:"+myAgent.getLocalName()+" received a reply from all supervisors that contains thesis proposals.");
+
                     // todo: Fix random picking by creating a gui
                     //randomly pick a supervisor for now
                     List<AID> keysAsArray = new ArrayList<>(proposalsBySupervisors.keySet());
@@ -57,7 +60,8 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
                     assert chosenThesis != null;
                     // set the thesisStudent variable of the thesis object to show, who owns the thesis
                     chosenThesis.setThesisStudent(myAgent.getAID());
-                    System.out.println("\n[INFO] Agent:["+myAgent.getLocalName()+ "] chose the Thesis:["+chosenThesis.getThesisTitle() + "] within all received proposals.");
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+ "] chose the Thesis:["+chosenThesis.getThesisTitle() + "] within all received proposals.");
+
                     ACLMessage acceptanceMessage = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
                     acceptanceMessage.addReceiver(thesisSupervisor);
                     acceptanceMessage.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
@@ -67,7 +71,7 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("\n[INFO] Agent:[" +myAgent.getLocalName()+ "] sent the chosen thesis proposal with the Title:["+chosenThesis.getThesisTitle()+"] to Agent:"+receivedMessage.getSender().getLocalName()+".");
+                    System.out.println("[INFO] Agent:[" +myAgent.getLocalName()+ "] sent the CHOSEN THESIS PROPOSAL:["+chosenThesis.getThesisTitle()+"] to Agent:"+ thesisSupervisor.getLocalName()+".");
                     myAgent.send(acceptanceMessage);
 
                     // todo: after picking one proposal from a supervisor, send rejection messages to other supervisors to inform them
@@ -81,10 +85,12 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
                             rejectionMessage.addReceiver(supervisor);
                         }
                     }
+                    System.out.println("[INFO] Agent:[" +myAgent.getLocalName()+ "] informed rest of the supervisors that it is not interested in their proposals");
                     myAgent.send(rejectionMessage);
-                } else {
-                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" is still waiting for all supervisors to send their proposals ");
                 }
+//                else {
+//                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" is still waiting for all supervisors to send their proposals ");
+//                }
 
             }
 

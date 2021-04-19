@@ -33,13 +33,14 @@ public class RequestThesisProposals extends OneShotBehaviour {
             ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
             for (AID supervisor : allSupervisors) {
                 message.addReceiver(supervisor);
-                System.out.println("\n[INFO] Supervisor name: " + supervisor.getLocalName());
+//                System.out.println("\n[INFO] Supervisor name: " + supervisor.getLocalName());
             }
             message.setContent(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS);
             message.setPerformative(ACLMessage.REQUEST);
             message.setConversationId(ConversationIDs.ASK_PROPOSALS.name());
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] sent a request to all supervisors to see their thesis opportunities.");
             myAgent.send(message);
-            System.out.println("[INFO] Agent "+myAgent.getLocalName()+" sent a request to all supervisors to see their thesis opportunities.");
+
         } else {
             System.out.println("\n[ERROR] There are no agents that offer the given service.");
         }

@@ -23,17 +23,21 @@ public class RequestExternalThesisProposals extends OneShotBehaviour {
 
     @Override
     public void action() {
+        // find the agents with the service "company"
         AID[] companyOrResearchCenters = Utils.getAgentList(myAgent, "company");
         if(companyOrResearchCenters != null && companyOrResearchCenters.length > 0){
             ACLMessage message = new ACLMessage(ACLMessage.REQUEST);
+
+            // add all agents with the company service to the message list
             for(AID company: companyOrResearchCenters){
                 message.addReceiver(company);
-                System.out.println("\n[INFO] Company name who offers thesis proposals: "+company.getLocalName());
             }
+
+            // this message content is a place holder but it can also be used for matching this message in the receiving company agents
             message.setContent(StudentMessageContents.REQUEST_COMPANY_THESIS_PROPOSALS);
             message.setPerformative(ACLMessage.REQUEST);
-            message.setConversationId(ConversationIDs.ASK_COMPANY_PROPOSALS.name()+myAgent.getLocalName());
-            System.out.println("[INFO] Agent "+myAgent.getLocalName()+" sent a request to the companies to see their thesis opportunities.");
+            message.setConversationId(ConversationIDs.ASK_COMPANY_PROPOSALS.toString());
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] sent a request to the companies to see their thesis opportunities.");
             myAgent.send(message);
         }else {
             System.out.println("\n[ERROR] There are no agents that offer the given service.");

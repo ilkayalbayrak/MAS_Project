@@ -8,9 +8,9 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class ListenIfExternalProposalAccepted extends CyclicBehaviour {
+public class ListenIfExternalProposalSufficient extends CyclicBehaviour {
 //    private final Agent agent;
-    public ListenIfExternalProposalAccepted(Agent agent) {
+    public ListenIfExternalProposalSufficient(Agent agent) {
 //        this.agent = agent;
     }
 

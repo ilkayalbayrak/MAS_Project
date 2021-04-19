@@ -124,7 +124,7 @@ public class Supervisor5 extends Agent {
         addBehaviour(new HandleThesisAcceptances());
         addBehaviour(new ListenInitialProposalRejections(this));
         addBehaviour(new ListenAdHocProposals(this));
-        addBehaviour(new ListenThesisCommittee(this));
+        addBehaviour(new ListenThesisCommitteeForExternalThesis(this));
 //        removeBehaviour(offerThesisProposals);
 //        removeBehaviour(this.HandleThesisAcceptances());
 //        removeBehaviour(OfferThesisProposals);
@@ -304,10 +304,10 @@ public class Supervisor5 extends Agent {
     }
 
 
-    private class ListenThesisCommittee extends CyclicBehaviour{
+    private class ListenThesisCommitteeForExternalThesis extends CyclicBehaviour{
         private Thesis receivedThesis;
 
-        public ListenThesisCommittee(Agent agent) {
+        public ListenThesisCommitteeForExternalThesis(Agent agent) {
             super(agent);
         }
 
@@ -332,6 +332,8 @@ public class Supervisor5 extends Agent {
 //                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NOT NUUUUUULLLLLLLLL");
                     // Revise the received thesis proposal before placing it into the "ongoing thesis" bucket
                     receivedThesis.setRevisedBySupervisor(true);
+                    // set this agent as supervisor
+                    receivedThesis.setThesisSupervisor(myAgent.getAID());
 
                     // put the thesis into on going thesis list
                     Aulaweb aulaweb = Aulaweb.getInstance();
@@ -340,8 +342,23 @@ public class Supervisor5 extends Agent {
                     assert student != null;
                     aulaweb.addONGOING_THESES(student, receivedThesis);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] revised the Thesis:["+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+"], and set it to ON_GOING");
+                    System.out.println(receivedThesis.getThesisStudent().getLocalName() +"   "+ receivedThesis.getThesisSupervisor().getLocalName());
 
-
+                    // todo: inform thesis committe after registering a thesis as ONGOING
+                    AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
+                    if (thesisCommittee != null && thesisCommittee.length > 0) {
+                        ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+                        message.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_FOR_ONGOING_THESIS_REGISTRATION.toString());
+                        message.addReceiver(thesisCommittee[0]);
+                        try {
+                            message.setContentObject(receivedThesis);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        myAgent.send(message);
+                    }else {
+                        System.out.println("[ERROR] There are no agents with the service that is being searched for.");
+                    }
                 }else {
                     System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] says: Received thesis is NULL.");
                 }

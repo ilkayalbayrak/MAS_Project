@@ -13,10 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HandleChosenThesisNotExist extends CyclicBehaviour {
+public class HandleChosenCompanyThesisNotExist extends CyclicBehaviour {
     private List<Thesis> receivedProposals = new ArrayList<>();
 
-    public HandleChosenThesisNotExist(Agent agent){
+    public HandleChosenCompanyThesisNotExist(Agent agent){
         super(agent);
 
     }
@@ -26,7 +26,7 @@ public class HandleChosenThesisNotExist extends CyclicBehaviour {
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
         if(receivedMessage != null){
-            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] informed that the thesis proposal it chose have already been chosen by another agent.");
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] have been informed by Agent:["+receivedMessage.getSender().getLocalName()+"] that the thesis proposal it chose have already been chosen by another agent.");
             try {
                 receivedProposals = (List<Thesis>) receivedMessage.getContentObject();
             } catch (UnreadableException e) {
@@ -40,7 +40,7 @@ public class HandleChosenThesisNotExist extends CyclicBehaviour {
 
             ACLMessage reply = receivedMessage.createReply();
             reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-            reply.setConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.toString());
+            reply.setConversationId(ConversationIDs.ACCEPT_COMPANY_THESIS_PROPOSAL.toString());
             try {
                 reply.setContentObject(chosenThesis);
             } catch (IOException e) {

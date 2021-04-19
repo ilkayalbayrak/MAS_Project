@@ -33,7 +33,7 @@ public class OfferCompanyThesisProposals extends CyclicBehaviour {
 //            }
 //        }
 
-        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchContent(StudentMessageContents.REQUEST_COMPANY_THESIS_PROPOSALS),
+        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.ASK_COMPANY_PROPOSALS.toString()),
                 MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 

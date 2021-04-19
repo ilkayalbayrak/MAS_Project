@@ -21,7 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class ResearchCenterOrCompany extends Agent {
+public class Company extends Agent {
     private List<Thesis> companyThesisList = new LinkedList<>();
     private Map<AID, Thesis> onGoingThesesList = new HashMap<>();
     public Map<AID, Thesis> getOnGoingThesesList() {
@@ -110,7 +110,7 @@ public class ResearchCenterOrCompany extends Agent {
         Utils.registerService(this, serviceTypes, serviceNames);
 
         addBehaviour(new OfferCompanyThesisProposals(this, companyThesisList));
-        addBehaviour(new HandleThesisAcceptances());
+        addBehaviour(new HandleCompanyThesisAcceptances());
     }
 
     @Override
@@ -123,11 +123,11 @@ public class ResearchCenterOrCompany extends Agent {
     // Receive info about which one of supervisor's TH proposals have been chosen by a student agent
     // Remove the chosen proposal from the supervisor's proposal list
     // Put the chosen thesis and student agent's name into the ON_GOING thesis list
-    private class HandleThesisAcceptances extends CyclicBehaviour {
+    private class HandleCompanyThesisAcceptances extends CyclicBehaviour {
 
         @Override
         public void action() {
-            MessageTemplate messageTemplate = MessageTemplate.MatchConversationId(ConversationIDs.ACCEPT_THESIS_PROPOSAL.name());
+            MessageTemplate messageTemplate = MessageTemplate.MatchConversationId(ConversationIDs.ACCEPT_COMPANY_THESIS_PROPOSAL.toString());
             ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
             if (receivedMessage != null){
@@ -140,11 +140,11 @@ public class ResearchCenterOrCompany extends Agent {
                         System.out.println("[ERROR] Agent "+ myAgent.getLocalName()+ " could not extract the proposals object from message");
                         e.printStackTrace();
                     }
-                    assert chosenThesis != null;
+
                     // todo: Check if the chosen thesis is already in the ON GOING theses list
-                    // if the chosen title already been picked send AVAILABLE proposals so the agent can pick one of them
+                    assert chosenThesis != null;
                     if (getOnGoingThesesList().containsValue(chosenThesis)){
-                        System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] says: Thesis:["+chosenThesis.getThesisTitle()+"] has already been chosen by another agent and informs the Agent:["+receivedMessage.getSender().getLocalName()+"] about the situation.");
+                        // if the chosen already been picked by another agent, then, send AVAILABLE proposals so the agent can pick one of them
                         ACLMessage reply = receivedMessage.createReply();
                         reply.setPerformative(ACLMessage.INFORM);
                         reply.setConversationId(ConversationIDs.THESIS_ALREADY_BEEN_PICKED.toString());
@@ -154,16 +154,31 @@ public class ResearchCenterOrCompany extends Agent {
                             System.out.println("\n[ERROR] Agent:["+ myAgent.getLocalName() +"] Failed to serialize its proposalList object.");
                             e.printStackTrace();
                         }
+                        System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] says: Thesis:["+chosenThesis.getThesisTitle()+"] has already been chosen by another agent and informs the Agent:["+receivedMessage.getSender().getLocalName()+"] about the situation.");
                         myAgent.send(reply);
 
                     } else{
+                        // todo: inform student in this part that its chossen thesis in fact was AVAILABLE so it can start with the thesis
                         removeProposal(chosenThesis);
                         System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesis.getThesisTitle()+
-                                " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
+                                " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available EXTERNAL thesis proposals list.");
 
-                        AID student = chosenThesis.getThesisStudent();
+                        AID student = receivedMessage.getSender();
                         setOnGoingTheses(student,chosenThesis);
-                        System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+chosenThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
+
+                        // register the student to the thesis
+                        chosenThesis.setThesisStudent(student);
+
+                        ACLMessage reply = receivedMessage.createReply();
+                        reply.setPerformative(ACLMessage.INFORM);
+                        reply.setConversationId(ConversationIDs.INFORM_STUDENT_CAN_START_COMPANY_THESIS.toString());
+                        try {
+                            reply.setContentObject(chosenThesis);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] registered Agent:["+student.getLocalName()+"] for the Thesis:["+ chosenThesis.getThesisTitle()+"], and set it to ON_GOING");
+                        myAgent.send(reply);
                     }
 
                 } else if(receivedMessage.getPerformative() == ACLMessage.REJECT_PROPOSAL){

@@ -27,13 +27,13 @@ public class ChooseAndContactSupervisor extends OneShotBehaviour {
 //        super.reset();
 //    }
 
-    @Override
-    public void onStart() {
-        long restartCount = getRestartCounter();
-        System.out.println("\n\n\n\n\n\n");
-        System.out.println("########################################################### RESTART COUNT == == == = "+restartCount);
-        System.out.println("\n\n\n\n\n\n");
-    }
+//    @Override
+//    public void onStart() {
+//        long restartCount = getRestartCounter();
+//        System.out.println("\n\n\n\n\n\n");
+//        System.out.println("########################################################### RESTART COUNT == == == = "+restartCount);
+//        System.out.println("\n\n\n\n\n\n");
+//    }
 
     @Override
     public void action() {

@@ -27,12 +27,12 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
     @Override
     public void action() {
 
-        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_FOR_EXTERNAL_THESIS.name()),
+        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_FOR_EXTERNAL_THESIS.toString()),
                 MessageTemplate.MatchPerformative(ACLMessage.INFORM));
 
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
         if (receivedMessage != null){
-            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received info about an EXTERNAL thesis from Agent:["+receivedMessage.getSender().getLocalName()+"]");
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received an EXTERNAL thesis proposal from Agent:["+receivedMessage.getSender().getLocalName()+"] for evaluation");
             try {
                 receivedThesis = (Thesis) receivedMessage.getContentObject();
 //                System.out.println("[INFO] Received EXTERNAL Thesis:[" + receivedThesis.getThesisTitle()+"] Course:["+receivedThesis.getThesisSubject()+"]");
@@ -40,16 +40,21 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
                 System.out.println("[ERROR] Agent "+myAgent.getLocalName()+" could not read the contents of the message coming from Agent: "+receivedMessage.getSender().getLocalName());
                 e.printStackTrace();
             }
-            if (receivedThesis.getAcademicWorth() > 50){
-                // search and select a supervisor for the chosen thesis
-                // inform the student agent that its external thesis proposal is accepted
-                // inform the selected supervisor
+            assert receivedThesis != null;
+             if (receivedThesis.getAcademicWorth() > 50){
+
 
                 System.out.println("[INFO] Agent "+myAgent.getLocalName()+" accepted the external thesis proposal of Agent:["+receivedMessage.getSender().getLocalName()+
                         "], since the proposal was academically sufficient");
 
-                AID[] thesisSupervisor = Utils.getAgentList(myAgent, receivedThesis.getThesisSubject().toString());
-                if(thesisSupervisor != null && thesisSupervisor.length > 0){
+                 // search and select a supervisor for the chosen thesis
+                 AID[] thesisSupervisor = Utils.getAgentList(myAgent, receivedThesis.getThesisSubject().toString());
+                 // inform the selected supervisor
+                 if(thesisSupervisor != null && thesisSupervisor.length > 0){
+
+                     // set the supervisor of thesis object
+                     receivedThesis.setThesisSupervisor(thesisSupervisor[0]);
+
                     ACLMessage messageToSupervisor = new ACLMessage(ACLMessage.INFORM);
                     messageToSupervisor.setConversationId(ConversationIDs.SELECT_SUPERVISOR_FOR_EXTERNAL_THESIS.toString());
                     messageToSupervisor.addReceiver(thesisSupervisor[0]);
@@ -61,7 +66,10 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
                     myAgent.send(messageToSupervisor);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] selected Agent:["+thesisSupervisor[0].getLocalName()+
                             "] as the supervisor the Thesis:["+receivedThesis.getThesisTitle()+"] which will be done by Agent:["+receivedMessage.getSender().getLocalName()+"]");
-                } else {
+
+                     // todo: inform the student agent that its external thesis proposal is accepted
+
+                 } else {
                     System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] says: there are no agents that providing the Service:["+receivedThesis.getThesisSubject()+"]");
                 }
 

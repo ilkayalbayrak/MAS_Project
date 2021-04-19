@@ -1,0 +1,3 @@
+-gui
+-agents
+sniffer:jade.tools.sniffer.Sniffer;Student1:agents.Student1("PROPOSED","MACHINE_LEARNING");Student2:agents.Student2("EXTERNAL","MACHINE_LEARNING");Student3:agents.Student3("AD_HOC","NATURAL_LANGUAGE_PROCESSING");Student4:agents.Student4("AD_HOC","MULTI_AGENT_SYSTEMS");Student5:agents.Student5("PROPOSED","COMPUTER_VISION");Reviewer1:agents.Reviewer1;Reviewer2:agents.Reviewer2;Reviewer3:agents.Reviewer3;Reviewer4:agents.Reviewer4;Reviewer5:agents.Reviewer5;Supervisor1:agents.Supervisor1;Supervisor2:agents.Supervisor2;Supervisor3:agents.Supervisor3;Supervisor4:agents.Supervisor4;Supervisor5:agents.Supervisor5;ThesisCommittee:agents.ThesisCommittee;Company:agents.Company
