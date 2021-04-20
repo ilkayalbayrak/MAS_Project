@@ -1,5 +1,6 @@
 package behaviours;
 
+import agents.Supervisor1;
 import interfaces.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
 import jade.core.AID;
@@ -33,6 +34,7 @@ public class OfferCompanyThesisProposals extends CyclicBehaviour {
 //            }
 //        }
 
+
         MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.ASK_COMPANY_PROPOSALS.toString()),
                 MessageTemplate.MatchPerformative(ACLMessage.REQUEST));
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
@@ -41,7 +43,7 @@ public class OfferCompanyThesisProposals extends CyclicBehaviour {
             System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received message from "+receivedMessage.getSender().getName());
             ACLMessage reply = receivedMessage.createReply();
             reply.setPerformative(ACLMessage.PROPOSE);
-
+//            Supervisor1.
             try {
                 reply.setContentObject((Serializable) companyThesisList);
             } catch (IOException e) {

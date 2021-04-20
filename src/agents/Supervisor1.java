@@ -22,7 +22,7 @@ import java.util.*;
 
 
 public class Supervisor1 extends Agent {
-    private List<Thesis> proposalList = new LinkedList<>();
+    private  List<Thesis> proposalList = new LinkedList<>();
     private Map<AID, Thesis> onGoingThesesList = new HashMap<>();
 
     public Map<AID, Thesis> getOnGoingThesesList() {

@@ -30,6 +30,9 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
         if (receivedMessage != null){
             try {
                 onGoingRegisteredThesis = (Thesis) receivedMessage.getContentObject();
+                if(onGoingRegisteredThesis != null){
+//                    System.out.println("\n\n\n***********************************************"+onGoingRegisteredThesis.getThesisSubject());
+                    }
             } catch (UnreadableException e) {
                 System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] could not read the contents of the message received from Agent:["+receivedMessage.getSender().getLocalName()+"]");
                 e.printStackTrace();
