@@ -89,7 +89,7 @@ public class Supervisor5 extends Supervisor {
 
     @Override
     protected void init() {
-        String[] serviceTypes = {"supervisor", "SPEECH_PROCESSING_AND_RECOGNITION"};
-        String[] serviceNames = {"professor", "professor_SPR"};
+        serviceTypes = new String[]{"supervisor", "SPEECH_PROCESSING_AND_RECOGNITION"};
+        serviceNames = new String[]{"professor", "professor_SPR"};
     }
 }
