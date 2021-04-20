@@ -1,5 +1,6 @@
 package behaviours;
 
+import agents.Student;
 import interfaces.enums.ConversationIDs;
 import interfaces.enums.ThesisTypes;
 import jade.core.Agent;
@@ -72,14 +73,14 @@ public class ListenResponseForAdHocThesis extends CyclicBehaviour {
                         System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] decided to choose a PROPOSED thesis proposal since its AD-HOC thesis idea was not good enough");
 
                         thesisType = ThesisTypes.PROPOSED.toString();
-                        Utils.executeChosenThesisPath(myAgent, thesisType, researchInterest, null);
+                        Student.executeChosenThesisPath(myAgent, thesisType, researchInterest, null);
 
                         break;
                     case 2:
                         System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] decided to choose an EXTERNAL thesis proposal since its AD-HOC thesis idea was not good enough");
 
                         thesisType = ThesisTypes.EXTERNAL.toString();
-                        Utils.executeChosenThesisPath(myAgent, thesisType, researchInterest, null);
+                        Student.executeChosenThesisPath(myAgent, thesisType, researchInterest, null);
                         break;
                 }
 
