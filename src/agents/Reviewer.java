@@ -1,5 +1,6 @@
 package agents;
 
+import behaviours.ListenFirstContactFromStudent;
 import jade.core.Agent;
 import utils.Utils;
 
@@ -15,6 +16,7 @@ public abstract class Reviewer extends Agent {
         Utils.registerService(this, serviceTypes, serviceNames);
 
         // todo: add behaviours
+        addBehaviour(new ListenFirstContactFromStudent(this));
 
     }
 

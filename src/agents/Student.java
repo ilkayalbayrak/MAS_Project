@@ -53,6 +53,7 @@ public abstract class Student extends Agent {
                     agent.addBehaviour(new ListenApprovalFromCompany(agent));
                     agent.addBehaviour(new HandleChosenCompanyThesisNotExist(agent));
                     agent.addBehaviour(new ListenIfExternalProposalSufficient(agent));
+                    agent.addBehaviour(new ListenWhoIsReviewer(agent));
                     break;
                 case "AD_HOC":
                     System.out.println("[INFO] Agent"+ agent.getLocalName() + " chose the AD_HOC TH path ");
@@ -62,6 +63,8 @@ public abstract class Student extends Agent {
                     if (adhocThesis !=null){
                         agent.addBehaviour(new ChooseAndContactSupervisor(agent, researchInterest, adhocThesis));
                         agent.addBehaviour(new ListenResponseForAdHocThesis(agent, adhocThesis));
+                        agent.addBehaviour(new ListenWhoIsReviewer(agent));
+
                     } else {
                         System.out.println("[ERROR] Agent "+agent.getLocalName()+": There are no presented AD-HOC thesis proposals.");
                     }
@@ -72,6 +75,8 @@ public abstract class Student extends Agent {
                     agent.addBehaviour(new RequestThesisProposals(agent, thesisType));
                     agent.addBehaviour(new ChooseUniThesisProposals(agent));
                     agent.addBehaviour(new HandleChosenThesisNotExist(agent));
+                    agent.addBehaviour(new ListenWhoIsReviewer(agent));
+
 //                    agent.addBehaviour(new Test(agent, thesisType));
                     break;
                 default:

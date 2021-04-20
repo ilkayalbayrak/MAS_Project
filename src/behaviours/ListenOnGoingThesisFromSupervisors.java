@@ -83,9 +83,9 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
             ACLMessage messageToStudent = new ACLMessage(ACLMessage.INFORM);
             messageToStudent.setConversationId(ConversationIDs.WHO_IS_YOUR_THESIS_REVIEWER.toString());
             messageToStudent.addReceiver(onGoingRegisteredThesis.getThesisStudent());
-            // todo: Do I need to send anything ??
+            // todo: Do I need to send anything ?? other than the name of the reviewer
             try {
-                messageToStudent.setContentObject(onGoingRegisteredThesis);
+                messageToStudent.setContentObject(reviewer[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -100,12 +100,6 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-//
-//            System.out.println("\n\n\n\n\n");
-//            aulaweb.getONGOING_THESES().entrySet().forEach(entry -> {
-//                System.out.println(entry.getKey() + " " + entry.getValue());
-//            });
-//            System.out.println("\n\n\n\n\n");
             myAgent.send(messageToSupervisor);
 
         }else {
