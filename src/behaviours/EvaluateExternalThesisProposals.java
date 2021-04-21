@@ -1,13 +1,11 @@
 package behaviours;
 
-import agents.ThesisCommittee;
-import interfaces.ProfessorMessageContents;
-import interfaces.StudentMessageContents;
+//import interfaces.ProfessorMessageContents;
 import interfaces.enums.ConversationIDs;
+import interfaces.enums.ProfessorMessageContents;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.CyclicBehaviour;
+        import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
@@ -15,7 +13,6 @@ import utils.Thesis;
 import utils.Utils;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 public class EvaluateExternalThesisProposals extends CyclicBehaviour {
     private Thesis receivedThesis;
@@ -78,7 +75,7 @@ public class EvaluateExternalThesisProposals extends CyclicBehaviour {
                 // inform the student agent that its external thesis proposal is not accepted
                 ACLMessage message = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
                 message.addReceiver(receivedMessage.getSender());
-                message.setContent(ProfessorMessageContents.EXTERNAL_THESIS_PROPOSAL_REJECTED);
+                message.setContent(ProfessorMessageContents.EXTERNAL_THESIS_PROPOSAL_REJECTED.toString());
                 System.out.println("[INFO] Agent "+myAgent.getLocalName()+" rejected the external thesis proposal of Agent:["+receivedMessage.getSender().getLocalName()+
                         "] because if was not academically sufficient");
                 myAgent.send(message);

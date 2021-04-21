@@ -1,9 +1,8 @@
 package behaviours;
 
-import interfaces.ProfessorMessageContents;
-import interfaces.StudentMessageContents;
+//import interfaces.ProfessorMessageContents;
+import interfaces.enums.ProfessorMessageContents;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -22,7 +21,7 @@ public class ListenIfExternalProposalSufficient extends CyclicBehaviour {
 
     @Override
     public void action() {
-        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchContent(ProfessorMessageContents.EXTERNAL_THESIS_PROPOSAL_REJECTED),
+        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchContent(ProfessorMessageContents.EXTERNAL_THESIS_PROPOSAL_REJECTED.toString()),
                 MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL));
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 //        agent.

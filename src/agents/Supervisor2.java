@@ -2,7 +2,7 @@ package agents;
 
 import behaviours.ListenInitialProposalRejections;
 import behaviours.OfferThesisProposals;
-import interfaces.ProfessorMessageContents;
+//import interfaces.ProfessorMessageContents;
 import interfaces.enums.ConversationIDs;
 import interfaces.enums.ThesisMainSubjects;
 import interfaces.enums.ThesisTypes;

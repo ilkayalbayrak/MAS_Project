@@ -1,10 +1,9 @@
 package behaviours;
 
-import interfaces.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
+import interfaces.enums.StudentMessageContents;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -31,7 +30,7 @@ public class ListenWhoIsReviewer extends CyclicBehaviour {
                     "] to discuss the progress of the work" );
             ACLMessage messageToReviewer = new ACLMessage(ACLMessage.REQUEST);
             messageToReviewer.setConversationId(ConversationIDs.CONTACT_THESIS_REVIEWER.toString());
-            messageToReviewer.setContent(StudentMessageContents.FIRST_CONNECTION_WITH_REVIEWER);
+            messageToReviewer.setContent(StudentMessageContents.FIRST_CONNECTION_WITH_REVIEWER.toString());
             messageToReviewer.addReceiver(reviewer);
             myAgent.send(messageToReviewer);
 

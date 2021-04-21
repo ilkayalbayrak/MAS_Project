@@ -1,13 +1,11 @@
 package behaviours;
 
-import agents.Reviewer;
-import interfaces.ProfessorMessageContents;
-import interfaces.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
+import interfaces.enums.ProfessorMessageContents;
+import interfaces.enums.StudentMessageContents;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
-import jade.core.behaviours.CyclicBehaviour;
+        import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import utils.Aulaweb;
@@ -26,7 +24,7 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
         MessageTemplate messageTemplate = MessageTemplate.MatchConversationId(ConversationIDs.CONTACT_THESIS_REVIEWER.toString());
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
         if (receivedMessage != null){
-            if (receivedMessage.getContent().equals(StudentMessageContents.FIRST_CONNECTION_WITH_REVIEWER)){
+            if (receivedMessage.getContent().equals(StudentMessageContents.FIRST_CONNECTION_WITH_REVIEWER.toString())){
                 Aulaweb aulaweb = Aulaweb.getInstance();
                 thesisToDiscuss = aulaweb.getONGOING_THESES().get(receivedMessage.getSender());
 
@@ -41,7 +39,7 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
                     // inform the student about revising the thesis
                     ACLMessage reply = receivedMessage.createReply();
                     reply.setPerformative(ACLMessage.INFORM);
-                    reply.setContent(ProfessorMessageContents.REVIEWER_REVISED_THE_THESIS);
+                    reply.setContent(ProfessorMessageContents.REVIEWER_REVISED_THE_THESIS.toString());
                     reply.setConversationId(ConversationIDs.START_WRITING_THE_THESIS.toString());
                     try {
                         reply.setContentObject(thesisToDiscuss);
@@ -57,7 +55,7 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
 
                     ACLMessage messageToCommittee = new ACLMessage(ACLMessage.INFORM);
                     messageToCommittee.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_REVIEWER_MET_STUDENT.toString());
-                    messageToCommittee.setContent(ProfessorMessageContents.REVIEWER_INFORMS_THE_COMMITTEE_ABOUT_MEETING_THE_STUDENT);
+                    messageToCommittee.setContent(ProfessorMessageContents.REVIEWER_INFORMS_THE_COMMITTEE_ABOUT_MEETING_THE_STUDENT.toString());
                     messageToCommittee.addReceiver(thesisCommittee[0]);
 
                     try {

@@ -1,6 +1,6 @@
 package behaviours;
 
-import interfaces.StudentMessageContents;
+import interfaces.enums.StudentMessageContents;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -10,7 +10,6 @@ import utils.Thesis;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 
 public class OfferThesisProposals extends CyclicBehaviour {
@@ -24,7 +23,7 @@ public class OfferThesisProposals extends CyclicBehaviour {
 
     @Override
     public void action() {
-        MessageTemplate messageTemplate = MessageTemplate.MatchContent(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS);
+        MessageTemplate messageTemplate = MessageTemplate.MatchContent(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS.toString());
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
         if (receivedMessage != null) {
@@ -35,7 +34,7 @@ public class OfferThesisProposals extends CyclicBehaviour {
             if (receivedMessage.getPerformative() == ACLMessage.REQUEST) {
 
                 //todo: this if cond. can be removed because receive the message by matching the Message Content
-                if (receivedMessage.getContent().equals(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS)) {
+                if (receivedMessage.getContent().equals(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS.toString())) {
                     reply.setPerformative(ACLMessage.PROPOSE);
 
                     try {

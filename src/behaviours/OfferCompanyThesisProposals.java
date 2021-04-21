@@ -1,20 +1,15 @@
 package behaviours;
 
-import agents.Supervisor1;
-import interfaces.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
-import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import utils.Thesis;
-import utils.Utils;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 public class OfferCompanyThesisProposals extends CyclicBehaviour {
     private List<Thesis> companyThesisList;

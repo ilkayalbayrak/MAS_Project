@@ -2,8 +2,9 @@ package agents;
 
 import behaviours.ListenInitialProposalRejections;
 import behaviours.OfferThesisProposals;
-import interfaces.ProfessorMessageContents;
+//import interfaces.ProfessorMessageContents;
 import interfaces.enums.ConversationIDs;
+import interfaces.enums.ProfessorMessageContents;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -190,7 +191,7 @@ public abstract class Supervisor extends Agent {
                     // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString());
-                    reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED);
+                    reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_ACCEPTED.toString());
                     myAgent.send(reply);
 
                     // todo: inform thesis committee after registering a thesis as ONGOING
@@ -214,7 +215,7 @@ public abstract class Supervisor extends Agent {
 
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString());
-                    reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_REJECTED);
+                    reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_REJECTED.toString());
                     myAgent.send(reply);
                     System.out.println("[INFO] Agent: "+myAgent.getLocalName()+" rejected AD-HOC thesis proposal of Agent: "+
                             receivedMessage.getSender().getLocalName());

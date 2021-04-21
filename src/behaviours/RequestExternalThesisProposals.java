@@ -1,14 +1,13 @@
 package behaviours;
 
-import interfaces.StudentMessageContents;
+//import interfaces.enums.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
+import interfaces.enums.StudentMessageContents;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import utils.Utils;
-
-import java.util.Map;
 
 public class RequestExternalThesisProposals extends OneShotBehaviour {
     public RequestExternalThesisProposals(Agent agent) {
@@ -34,7 +33,7 @@ public class RequestExternalThesisProposals extends OneShotBehaviour {
             }
 
             // this message content is a place holder but it can also be used for matching this message in the receiving company agents
-            message.setContent(StudentMessageContents.REQUEST_COMPANY_THESIS_PROPOSALS);
+            message.setContent(StudentMessageContents.REQUEST_COMPANY_THESIS_PROPOSALS.toString());
             message.setPerformative(ACLMessage.REQUEST);
             message.setConversationId(ConversationIDs.ASK_COMPANY_PROPOSALS.toString());
             System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] sent a request to the companies to see their thesis opportunities.");

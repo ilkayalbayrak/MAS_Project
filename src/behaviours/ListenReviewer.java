@@ -1,8 +1,9 @@
 package behaviours;
 
 import agents.ThesisCommittee;
-import interfaces.ProfessorMessageContents;
+//import interfaces.ProfessorMessageContents;
 import interfaces.enums.ConversationIDs;
+import interfaces.enums.ProfessorMessageContents;
 import jade.core.Agent;
 import jade.core.CallbackInvokator;
 import jade.core.behaviours.Behaviour;
@@ -33,7 +34,7 @@ public class ListenReviewer extends CyclicBehaviour {
                     "] had a meeting with student Agent:["+thesis.getThesisStudent().getLocalName()+"], and discussed the Thesis:["+thesis.getThesisTitle()+"]");
             ACLMessage reply = receivedMessage.createReply();
             reply.setPerformative(ACLMessage.CONFIRM);
-            reply.setContent(ProfessorMessageContents.THCOMMITTEE_CONFIRMS_THE_MEETING_BETWEEN_REVIEWER_AND_STUDENT);
+            reply.setContent(ProfessorMessageContents.THCOMMITTEE_CONFIRMS_THE_MEETING_BETWEEN_REVIEWER_AND_STUDENT.toString());
             myAgent.send(reply);
 
         }else {

@@ -1,22 +1,12 @@
 package behaviours;
 
-import interfaces.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
+import interfaces.enums.StudentMessageContents;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
-import jade.lang.acl.UnreadableException;
-import utils.Thesis;
 import utils.Utils;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 public class RequestThesisProposals extends OneShotBehaviour {
     private final String thesisType;
@@ -35,7 +25,7 @@ public class RequestThesisProposals extends OneShotBehaviour {
                 message.addReceiver(supervisor);
 //                System.out.println("\n[INFO] Supervisor name: " + supervisor.getLocalName());
             }
-            message.setContent(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS);
+            message.setContent(StudentMessageContents.REQUEST_ALL_THESIS_PROPOSALS.toString());
             message.setPerformative(ACLMessage.REQUEST);
             message.setConversationId(ConversationIDs.ASK_PROPOSALS.name());
             System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] sent a request to all supervisors to see their thesis opportunities.");

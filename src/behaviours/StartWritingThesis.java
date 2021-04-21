@@ -1,6 +1,6 @@
 package behaviours;
 
-import interfaces.ProfessorMessageContents;
+//import interfaces.ProfessorMessageContents;
 import interfaces.enums.ConversationIDs;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
