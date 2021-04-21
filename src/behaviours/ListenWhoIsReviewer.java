@@ -31,7 +31,7 @@ public class ListenWhoIsReviewer extends CyclicBehaviour {
                     "] to discuss the progress of the work" );
             ACLMessage messageToReviewer = new ACLMessage(ACLMessage.REQUEST);
             messageToReviewer.setConversationId(ConversationIDs.CONTACT_THESIS_REVIEWER.toString());
-            messageToReviewer.setContent(StudentMessageContents.FIRST_CONNECTION_WITH_REVIEVER);
+            messageToReviewer.setContent(StudentMessageContents.FIRST_CONNECTION_WITH_REVIEWER);
             messageToReviewer.addReceiver(reviewer);
             myAgent.send(messageToReviewer);
 

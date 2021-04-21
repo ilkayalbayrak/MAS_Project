@@ -29,12 +29,12 @@ public class ListenReviewer extends CyclicBehaviour {
                 e.printStackTrace();
             }
 
-            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] informed by Agent:["+receivedMessage.getSender().getLocalName()+
-                    "] that they had met the student Agent:["+thesis.getThesisStudent().getLocalName()+"], and discussed the Thesis:["+thesis.getThesisTitle()+"]");
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] CONFIRMS that the reviewer Agent:["+receivedMessage.getSender().getLocalName()+
+                    "] had a meeting with student Agent:["+thesis.getThesisStudent().getLocalName()+"], and discussed the Thesis:["+thesis.getThesisTitle()+"]");
             ACLMessage reply = receivedMessage.createReply();
             reply.setPerformative(ACLMessage.CONFIRM);
-//            reply.setContent();
-
+            reply.setContent(ProfessorMessageContents.THCOMMITTEE_CONFIRMS_THE_MEETING_BETWEEN_REVIEWER_AND_STUDENT);
+            myAgent.send(reply);
 
         }else {
             block();

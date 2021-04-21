@@ -26,9 +26,10 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
         MessageTemplate messageTemplate = MessageTemplate.MatchConversationId(ConversationIDs.CONTACT_THESIS_REVIEWER.toString());
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
         if (receivedMessage != null){
-            if (receivedMessage.getContent().equals(StudentMessageContents.FIRST_CONNECTION_WITH_REVIEVER)){
+            if (receivedMessage.getContent().equals(StudentMessageContents.FIRST_CONNECTION_WITH_REVIEWER)){
                 Aulaweb aulaweb = Aulaweb.getInstance();
                 thesisToDiscuss = aulaweb.getONGOING_THESES().get(receivedMessage.getSender());
+
                 // check if the thesis academically sufficient and check if revised by the supervisor
                 // academic worth threshold may be increased to start a different discussion
                 if (thesisToDiscuss.isRevisedBySupervisor()){
@@ -41,6 +42,7 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
                     ACLMessage reply = receivedMessage.createReply();
                     reply.setPerformative(ACLMessage.INFORM);
                     reply.setContent(ProfessorMessageContents.REVIEWER_REVISED_THE_THESIS);
+                    reply.setConversationId(ConversationIDs.START_WRITING_THE_THESIS.toString());
                     try {
                         reply.setContentObject(thesisToDiscuss);
                     } catch (IOException e) {
@@ -48,11 +50,11 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
                     }
                     myAgent.send(reply);
 
+                    //inform the thesis comm that reviewer met the student
                     AID[] thesisCommittee = Utils.getAgentList(myAgent, "thesis_committee");
                     assert thesisCommittee !=null;
                     assert thesisCommittee[0] != null;
 
-                    //inform the thesis comm that review met the student
                     ACLMessage messageToCommittee = new ACLMessage(ACLMessage.INFORM);
                     messageToCommittee.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_REVIEWER_MET_STUDENT.toString());
                     messageToCommittee.setContent(ProfessorMessageContents.REVIEWER_INFORMS_THE_COMMITTEE_ABOUT_MEETING_THE_STUDENT);
@@ -63,7 +65,9 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] informs the Thesis Committee that they met the student Agent:["+ receivedMessage.getSender().getLocalName()+ "]");
+
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] informs the Thesis Committee Agent:["+thesisCommittee[0].getLocalName()+
+                            "] that they had met the student Agent:["+thesisToDiscuss.getThesisStudent().getLocalName()+"], and discussed the Thesis:["+thesisToDiscuss.getThesisTitle()+"]");
                     myAgent.send(messageToCommittee);
 
                 }else if (thesisToDiscuss.getAcademicWorth() < 50){
