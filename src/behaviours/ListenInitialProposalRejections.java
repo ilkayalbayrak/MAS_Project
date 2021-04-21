@@ -1,13 +1,17 @@
 package behaviours;
 
-import agents.Supervisor1;
-import agents.Supervisor5;
 import interfaces.enums.ConversationIDs;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
+/*
+* Supervisor behaviour that receives the rejection messages when a student
+* reject supervisors thesis proposals
+* This behaviour causes no action for now, but it has potential to be used in a
+* creative way, therefore, it exists.
+* */
 public class ListenInitialProposalRejections extends CyclicBehaviour {
     public ListenInitialProposalRejections(Agent agent) {
         super(agent);
@@ -15,12 +19,12 @@ public class ListenInitialProposalRejections extends CyclicBehaviour {
 
     @Override
     public void action() {
-        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.REJECT_PROPOSAL_IF_NOT_INTERESTED.toString()),
+        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.REJECT_PROPOSAL_IF_STUDENT_NOT_INTERESTED.toString()),
                 MessageTemplate.MatchPerformative(ACLMessage.REJECT_PROPOSAL));
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
         if (receivedMessage != null){
-            System.out.println("[INFO] Agent:["+receivedMessage.getSender().getLocalName()+"] informed Agent:["+myAgent.getLocalName()+"] that it is not interested in any of the proposals.");
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] informed by Agent:["+receivedMessage.getSender().getLocalName()+"] that the agent was not interested in any of the proposals.");
         }else {
             block();
         }

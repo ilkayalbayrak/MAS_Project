@@ -22,19 +22,6 @@ public class ChooseAndContactSupervisor extends OneShotBehaviour {
         this.adhocThesis = adhocThesis;
     }
 
-//    @Override
-//    public void reset() {
-//        super.reset();
-//    }
-
-//    @Override
-//    public void onStart() {
-//        long restartCount = getRestartCounter();
-//        System.out.println("\n\n\n\n\n\n");
-//        System.out.println("########################################################### RESTART COUNT == == == = "+restartCount);
-//        System.out.println("\n\n\n\n\n\n");
-//    }
-
     @Override
     public void action() {
         // contact the supervisors that have the same research interest with the agent
@@ -49,8 +36,8 @@ public class ChooseAndContactSupervisor extends OneShotBehaviour {
             }
             message.addReceiver(supervisorsToContact[0]);
             message.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString());
-            myAgent.send(message);
             System.out.println("[INFO] Agent: "+myAgent.getLocalName()+" sent its AD HOC thesis proposal to Agent: "+supervisorsToContact[0].getLocalName());
+            myAgent.send(message);
         }
     }
 }

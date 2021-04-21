@@ -6,7 +6,6 @@ import utils.Utils;
 
 public class Student1 extends Student {
 
-
     @Override
     protected void init() {
         serviceNames=new String[]{"student1"};

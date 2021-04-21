@@ -13,6 +13,12 @@ import utils.Utils;
 
 import java.io.IOException;
 
+/*
+* Student behaviour that waits for the company approve the thesis
+* the agent wants to do.
+* After the approval, student sends this external thesis proposal for
+* evaluation to the Thesis Committee
+* */
 public class ListenApprovalFromCompany extends CyclicBehaviour {
     private Thesis chosenThesis;
     public ListenApprovalFromCompany(Agent agent) {
@@ -24,15 +30,14 @@ public class ListenApprovalFromCompany extends CyclicBehaviour {
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
         if(receivedMessage != null){
-            // todo: submit the thesis to the thesis committee
-            System.out.println("######################################### STUDENT WAS INFORMED BY THE COMAPNY THAT IT CAN START THE THESIS");
-
             try {
+                // get the thesis
                 chosenThesis = (Thesis) receivedMessage.getContentObject();
             } catch (UnreadableException e) {
                 e.printStackTrace();
             }
 
+            // find the Thesis Committee agent
             AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
             if (thesisCommittee != null && thesisCommittee.length > 0){
                 ACLMessage message = new ACLMessage(ACLMessage.INFORM);

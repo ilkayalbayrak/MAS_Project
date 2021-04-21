@@ -16,6 +16,12 @@ import utils.Utils;
 
 import java.io.IOException;
 
+/*
+* Thesis Committee behaviour that receives messages from supervisors when a thesis
+* was registered as ON GOING by the supervisor
+* Then assigns a reviewer to the thesis and updates the thesis on Aulaweb adding the reviewer
+* Then informs the student and the reviewer
+* */
 public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
     private Thesis onGoingRegisteredThesis;
     public ListenOnGoingThesisFromSupervisors(Agent agent) {
@@ -30,9 +36,6 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
         if (receivedMessage != null){
             try {
                 onGoingRegisteredThesis = (Thesis) receivedMessage.getContentObject();
-                if(onGoingRegisteredThesis != null){
-//                    System.out.println("\n\n\n***********************************************"+onGoingRegisteredThesis.getThesisSubject());
-                    }
             } catch (UnreadableException e) {
                 System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] could not read the contents of the message received from Agent:["+receivedMessage.getSender().getLocalName()+"]");
                 e.printStackTrace();
@@ -44,13 +47,10 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
 
             // todo: choose a reviewer for the thesis
             StringBuilder service = new StringBuilder().append(ServiceTypes.REVIEWER).append("_").append(onGoingRegisteredThesis.getThesisSubject());
-            System.out.println("########################################################"+service.toString());
-//            String service = ServiceTypes.REVIEWER.toString()+ "_" + onGoingRegisteredThesis.getThesisSubject();
-//            AID[] reviewer = Utils.getAgentList(myAgent, onGoingRegisteredThesis.getThesisSubject());
             AID[] reviewer = Utils.getAgentList(myAgent, service.toString());
+
             // thesis comm informs the student and the supervisor and the reviewer that the reviewer will revise the thesis
             // and send a list of future deadlines
-
             assert reviewer != null && reviewer[0] != null;
             System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] choose Agent:["+reviewer[0].getLocalName()+
                     "] as the reviewer of the Thesis:["+onGoingRegisteredThesis.getThesisTitle()+"] which will be done by Agent:["+onGoingRegisteredThesis.getThesisStudent().getLocalName()+"]");
@@ -60,7 +60,7 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
 
             // Update the ONGOING THESES list ON AULAWEB after adding a REVIEWER for the thesis
             Aulaweb aulaweb = Aulaweb.getInstance();
-            // onGoingRegisteredThesis is a slightly modified version(Added a Reviewer on line 56) of a Thesis obj that should be already exist in Aulaweb
+            // onGoingRegisteredThesis is a slightly modified version(Added a Reviewer on the previous lines) of a Thesis obj that should be already exist in Aulaweb
             // now we are only updating it to the Reviewer added version
             if (aulaweb.getONGOING_THESES().containsKey(onGoingRegisteredThesis.getThesisStudent())){
                 aulaweb.addONGOING_THESES(onGoingRegisteredThesis.getThesisStudent(), onGoingRegisteredThesis);

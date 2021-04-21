@@ -13,6 +13,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/*
+* Student behaviour that handles the action if the thesis proposal student wanted to
+* pick was already taken by another student. Basically, student picks a thesis among the
+* remaining proposals of the same COMPANY
+* */
 public class HandleChosenCompanyThesisNotExist extends CyclicBehaviour {
     private List<Thesis> receivedProposals = new ArrayList<>();
 
@@ -27,17 +33,22 @@ public class HandleChosenCompanyThesisNotExist extends CyclicBehaviour {
 
         if(receivedMessage != null){
             System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] have been informed by Agent:["+receivedMessage.getSender().getLocalName()+"] that the thesis proposal it chose have already been chosen by another agent.");
+
             try {
+                // get the remaining proposals of the company
                 receivedProposals = (List<Thesis>) receivedMessage.getContentObject();
             } catch (UnreadableException e) {
                 e.printStackTrace();
             }
+
+            // randomly pick one of the proposals
             assert receivedProposals != null;
             Thesis chosenThesis = Utils.pickRandomThesis(receivedProposals);
             assert chosenThesis != null;
             chosenThesis.setThesisStudent(myAgent.getAID());
             System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] picked a new proposal since the first one was taken by another agent. New Thesis:["+chosenThesis.getThesisTitle()+"]");
 
+            // inform the company about the new proposal student wants to pick
             ACLMessage reply = receivedMessage.createReply();
             reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
             reply.setConversationId(ConversationIDs.ACCEPT_COMPANY_THESIS_PROPOSAL.toString());

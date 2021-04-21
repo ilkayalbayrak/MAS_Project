@@ -56,10 +56,6 @@ public abstract class Supervisor extends Agent {
         System.out.println(this.getAID().getName() + " says: I have served my purpose. Now, time has come to set sail for the Undying Lands.");
     }
 
-    // For the PROPOSED THESIS PATH
-    // Receive info about which one of supervisor's TH proposals have been chosen by a student agent
-    // Remove the chosen proposal from the supervisor's proposal list
-    // Put the chosen thesis and student agent's name into the ON_GOING thesis list
 
 ////////////////////////////////////////////////// ----- NESTED BEHAVIOURS ----- //////////////////////////////////////////////////
 
@@ -241,10 +237,8 @@ public abstract class Supervisor extends Agent {
                     MessageTemplate.MatchPerformative(ACLMessage.INFORM));
             ACLMessage receivedMessage = myAgent.receive(mtExternalThesis);
 
+            // check if there is any messages that match our receive template
             if (receivedMessage != null ){
-//                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## MESSAGG E IS NOT NUUUUUULLLLLLLLL");
-                //Get the external TH proposal from the msg content
-//                Thesis receivedThesis = null;
                 try {
                     receivedThesis = (Thesis) receivedMessage.getContentObject();
                 } catch (UnreadableException e) {
@@ -252,9 +246,10 @@ public abstract class Supervisor extends Agent {
                     e.printStackTrace();
                 }
                 if (receivedThesis != null){
-//                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" ################## THESISISIISISISIISIS IS NOT NUUUUUULLLLLLLLL");
-                    // Revise the received thesis proposal before placing it into the "ongoing thesis" bucket
+
+                    // supervisor revises the thesis
                     receivedThesis.setRevisedBySupervisor(true);
+
                     // set this agent as supervisor
                     receivedThesis.setThesisSupervisor(myAgent.getAID());
 
@@ -262,12 +257,13 @@ public abstract class Supervisor extends Agent {
                     Aulaweb aulaweb = Aulaweb.getInstance();
                     AID student = receivedThesis.getThesisStudent();
 
+                    // add the thesis into the ON GOING list on Aulaweb
                     assert student != null;
                     aulaweb.addONGOING_THESES(student, receivedThesis);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] revised the Thesis:["+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+"], and set it to ON_GOING");
                     System.out.println(receivedThesis.getThesisStudent().getLocalName() +"   "+ receivedThesis.getThesisSupervisor().getLocalName());
 
-                    // todo: inform thesis committe after registering a thesis as ONGOING
+                    // inform thesis committee after registering a thesis as ONGOING
                     AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
                     if (thesisCommittee != null && thesisCommittee.length > 0) {
                         ACLMessage message = new ACLMessage(ACLMessage.INFORM);

@@ -44,20 +44,21 @@ public class ChooseCompanyThesisProposal extends CyclicBehaviour {
 
             proposalsByCompany.put(receivedMessage.getSender(), receivedProposals);
             if(numberOfCompanies == proposalsByCompany.size()){
-                System.out.println("\n[INFO] Agent:"+myAgent.getLocalName()+" received a reply from all companies that contains thesis proposals.");
+                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" received a reply from all companies that contains thesis proposals.");
 
                 // todo: Fix random picking by creating a gui
+
                 //randomly pick a company for now
                 List<AID> keysAsArray = new ArrayList<>(proposalsByCompany.keySet());
                 Random r = new Random();
                 AID thesisCompany = keysAsArray.get(r.nextInt(keysAsArray.size()));
-                // randomly pick a thesis for now
-                Thesis chosenThesis = Utils.pickRandomThesis(proposalsByCompany.get(thesisCompany));
 
+                // randomly choose a thesis for now
+                Thesis chosenThesis = Utils.pickRandomThesis(proposalsByCompany.get(thesisCompany));
                 assert chosenThesis != null;
                 System.out.println("[INFO] Agent:["+myAgent.getLocalName()+ "] chose the Thesis:["+chosenThesis.getThesisTitle()+"] within all EXTERNAL proposals.");
 
-                // todo: inform the company about the thesis student wanna do
+                // inform the company about the thesis student wants to choose
                 ACLMessage acceptanceMessage = new ACLMessage(ACLMessage.ACCEPT_PROPOSAL);
                 acceptanceMessage.addReceiver(thesisCompany);
                 acceptanceMessage.setConversationId(ConversationIDs.ACCEPT_COMPANY_THESIS_PROPOSAL.toString());
@@ -69,8 +70,7 @@ public class ChooseCompanyThesisProposal extends CyclicBehaviour {
                 System.out.println("[INFO] Agent:[" +myAgent.getLocalName()+ "] sent the CHOSEN THESIS PROPOSAL:["+chosenThesis.getThesisTitle()+"] to Agent:"+ thesisCompany.getLocalName()+".");
                 myAgent.send(acceptanceMessage);
 
-
-                // todo: after picking one proposal from a company, send rejection messages to other companies to inform them
+                // after picking one proposal from a company, send rejection messages to other companies to inform them
                 ACLMessage rejectionMessage = new ACLMessage(ACLMessage.REJECT_PROPOSAL);
                 rejectionMessage.setConversationId(ConversationIDs.REJECT_COMPANY_PROPOSAL_IF_NOT_INTERESTED.toString());
 

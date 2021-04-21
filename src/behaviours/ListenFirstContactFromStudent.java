@@ -14,6 +14,10 @@ import utils.Utils;
 
 import java.io.IOException;
 
+/*
+* Reviewer behaviour that waits for a student to start a thesis discussion
+* after the thesis and supervisor of the thesis are all decided
+* */
 public class ListenFirstContactFromStudent extends CyclicBehaviour {
     private Thesis thesisToDiscuss;
     public ListenFirstContactFromStudent(Agent agent) {
@@ -29,7 +33,7 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
                 thesisToDiscuss = aulaweb.getONGOING_THESES().get(receivedMessage.getSender());
 
                 // check if the thesis academically sufficient and check if revised by the supervisor
-                // academic worth threshold may be increased to start a different discussion
+                // academic worth threshold may be increased to start a different discussion ??
                 if (thesisToDiscuss.isRevisedBySupervisor()){
                     thesisToDiscuss.setRevisedByReviewer(true);
                     aulaweb.updateONGOING_THESES(receivedMessage.getSender(), thesisToDiscuss);
@@ -48,11 +52,12 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
                     }
                     myAgent.send(reply);
 
-                    //inform the thesis comm that reviewer met the student
+                    // find thesis committee agent
                     AID[] thesisCommittee = Utils.getAgentList(myAgent, "thesis_committee");
                     assert thesisCommittee !=null;
                     assert thesisCommittee[0] != null;
 
+                    //inform the Thesis Committee that reviewer met the student
                     ACLMessage messageToCommittee = new ACLMessage(ACLMessage.INFORM);
                     messageToCommittee.setConversationId(ConversationIDs.INFORM_THESIS_COMMITTEE_REVIEWER_MET_STUDENT.toString());
                     messageToCommittee.setContent(ProfessorMessageContents.REVIEWER_INFORMS_THE_COMMITTEE_ABOUT_MEETING_THE_STUDENT.toString());
