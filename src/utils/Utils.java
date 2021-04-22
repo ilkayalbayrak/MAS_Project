@@ -11,6 +11,10 @@ import jade.domain.FIPAException;
 import java.util.List;
 import java.util.Random;
 
+/*
+* Utils class is for defining some useful functions that are most likely will be used by
+* all agents
+* */
 public class Utils {
 
     // Method for registering the agent services to yellow pages
@@ -33,6 +37,7 @@ public class Utils {
         }
     }
 
+    // Method for de-registering the agent services to yellow pages
     public static void deregister(Agent agent) {
         try {
             DFService.deregister(agent);
@@ -58,21 +63,6 @@ public class Utils {
         }
         return null;
     }
-    // Method for searching agents that offer specified services
-//    public static DFAgentDescription[] searchServices(Agent agent, String serviceType){
-//
-//        try{
-//            DFAgentDescription searchTemplate = new DFAgentDescription();
-//            ServiceDescription serviceDescription = new ServiceDescription();
-//            serviceDescription.setType(serviceType);
-//            searchTemplate.addServices(serviceDescription);
-//            DFAgentDescription[] results = DFService.search(agent, searchTemplate);
-//        } catch (FIPAException e) {
-//            System.out.println("[ERROR] Failed to search for agent services.");
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
 
     // agent is myagent, agents is the agents we are searching for, and service is our search context for the agents
     public static AID[] getAgentList(Agent agent, String service){

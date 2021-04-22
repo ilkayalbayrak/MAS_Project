@@ -9,7 +9,9 @@ import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
 
-
+/*
+* Main class that is for starting all the agents instead of using the console to start them
+* */
 public class GraduationProcess {
     AgentController rma;
     AgentController sniffer;
