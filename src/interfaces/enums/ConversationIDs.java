@@ -1,7 +1,11 @@
 package interfaces.enums;
 
+/*
+* ConversationID enums that is used for sending and receiving right messages
+* in agent to agent conversation
+* */
 public enum ConversationIDs {
-    ASK_PROPOSALS,
+    ASK_SUPERVISOR_PROPOSALS,
     ASK_COMPANY_PROPOSALS,
     ACCEPT_THESIS_PROPOSAL,
     ACCEPT_COMPANY_THESIS_PROPOSAL,

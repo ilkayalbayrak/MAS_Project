@@ -6,34 +6,14 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+* Aulaweb is a single instance class works as a global platform for storing the
+* On Going theses
+* */
 public final class Aulaweb implements Serializable {
     private static Aulaweb INSTANCE = null;
     private String info = "Singleton class for globally shared variable";
-    private Map<AID, Thesis> ONGOING_THESES = new HashMap<>();
-
-
-    public String getInfo() {
-        return info;
-    }
-
-    public Map<AID, Thesis> getONGOING_THESES() {
-        return ONGOING_THESES;
-    }
-
-    public void removeONGOING_THESES(Thesis thesis){
-        this.ONGOING_THESES.remove(thesis);
-    }
-
-    public void updateONGOING_THESES(AID student, Thesis thesis){
-        if(this.getONGOING_THESES().containsValue(thesis)){
-
-        }
-    }
-
-    public void addONGOING_THESES(AID student, Thesis thesis) {
-//        if ()
-        this.ONGOING_THESES.put(student, thesis);
-    }
+    private Map<AID, Thesis> onGoingThesesByStudent = new HashMap<>();
 
     private Aulaweb() {
     }
@@ -45,5 +25,31 @@ public final class Aulaweb implements Serializable {
         return INSTANCE;
     }
 
-    // getters and setters
+    /////////////////////////////////////////
+    ////////// GETTER AND SETTERS ///////////
+    /////////////////////////////////////////
+
+    public String getInfo() {
+        return info;
+    }
+
+    public Map<AID, Thesis> getOnGoingThesesByStudent() {
+        return onGoingThesesByStudent;
+    }
+
+    public void removeOnGoingTheseByStudent(Thesis thesis){
+        this.onGoingThesesByStudent.remove(thesis);
+    }
+
+    public void updateOnGoingThesesByStudent(AID student, Thesis thesis){
+        if(this.getOnGoingThesesByStudent().containsKey(student)){
+            this.onGoingThesesByStudent.put(student,thesis);
+        }else{
+            System.out.println("[ERROR] The Agent:["+student.getLocalName()+"] does not have a registered thesis on Aulaweb, therefore can not use the (updateOnGoingThesesByStudent) function");
+        }
+    }
+
+    public void addOnGoingThesesByStudent(AID student, Thesis thesis) {
+        this.onGoingThesesByStudent.put(student, thesis);
+    }
 }

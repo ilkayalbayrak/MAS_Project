@@ -15,6 +15,13 @@ import utils.Utils;
 import java.io.IOException;
 import java.util.Random;
 
+/*
+* Student agent behaviour that listens supervisor to understand if the ad-hoc thesis proposal
+* of the student was rejected or accepted
+* If accepted student agent follows the rest of the ad-hoc thesis path shown on the Aulaweb(the real one) schema
+* If rejected student randomly picks 1 of the 3 options that may make the agent decide to follow
+* different thesis paths or, increase the academic value of the current ad-hoc thesis and re-discuss with the supervisor
+* */
 public class ListenResponseForAdHocThesis extends CyclicBehaviour {
     private Thesis adHocThesis;
     private String researchInterest = null;
@@ -37,8 +44,8 @@ public class ListenResponseForAdHocThesis extends CyclicBehaviour {
 
                 // Randomly choose between;
                 // - increasing the academical sufficiency of the AD_HOC thesis
-                // - changing students mind to do a PROPOSED thesis
-                // - changing students mind to do a EXTERNAL thesis
+                // - changing student's mind to do a PROPOSED thesis
+                // - changing student's mind to do a EXTERNAL thesis
 
                 // Generate random number to decide
                 // 0: fix AD_HOC thesis
@@ -83,12 +90,9 @@ public class ListenResponseForAdHocThesis extends CyclicBehaviour {
                         Student.executeChosenThesisPath(myAgent, thesisType, researchInterest, null);
                         break;
                 }
-
             }
         }else {
             block();
         }
-
-
     }
 }

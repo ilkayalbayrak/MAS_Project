@@ -10,6 +10,11 @@ import jade.lang.acl.MessageTemplate;
 import jade.lang.acl.UnreadableException;
 import utils.Thesis;
 
+/*
+* Student behaviour that receives a message from the reviewer that indicates; student and the reviewer finalized
+* their thesis discussion and now student agent should write the thesis
+*
+* */
 public class StartWritingThesis extends CyclicBehaviour {
     private Thesis discussedThesis;
     public StartWritingThesis(Agent agent) {

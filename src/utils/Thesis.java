@@ -4,21 +4,55 @@ import jade.core.AID;
 
 import java.io.Serializable;
 
+
+/*
+* Thesis class for defining a thesis
+* */
 public class Thesis implements Serializable {
 
-    // thsis type: external, proposed etc.
+    // Thesis type: EXTERNAL, PROPOSED, AD_HOC
     private String thesisType;
+
+    // title: NLP_Thesis1
     private String thesisTitle;
+
+    // subject: NATURAL_LANGUAGE_PROCESSING
     private String thesisSubject;
+
+
     private String thesisInfo;
 
-    //set a value between 30-100
+    //set a value between 30-100 that indicates academic worth of the thesis
+    // there is no control if it's in fact between 30-100 for now
     private int academicWorth;
+
+    // AID of student who works on the thesis: AID of Student1 agent for ex...
     private AID thesisStudent;
+
+    // AID of the supervisor agent
     private AID thesisSupervisor;
+
+    // AID of the reviewer agent
     private AID thesisReviewer;
+
+    // Some boolean checks that are for simulating different phases thesis go through
     private boolean revisedBySupervisor = false;
     private boolean revisedByReviewer = false;
+    private boolean discussedWithReviewer = false;
+
+
+
+    /////////////////////////////////////////
+    ////////// GETTER AND SETTERS ///////////
+    /////////////////////////////////////////
+
+    public boolean isDiscussedWithReviewer() {
+        return discussedWithReviewer;
+    }
+
+    public void setDiscussedWithReviewer(boolean discussedWithReviewer) {
+        this.discussedWithReviewer = discussedWithReviewer;
+    }
 
     public boolean isRevisedByReviewer() {
         return revisedByReviewer;

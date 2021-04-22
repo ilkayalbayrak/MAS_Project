@@ -26,7 +26,7 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
 
     @Override
     public void action() {
-        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.ASK_PROPOSALS.name()),
+        MessageTemplate messageTemplate = MessageTemplate.and(MessageTemplate.MatchConversationId(ConversationIDs.ASK_SUPERVISOR_PROPOSALS.name()),
                 MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
 
         // receive all proposals/refusals from the supervisor agents

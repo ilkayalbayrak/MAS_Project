@@ -24,6 +24,10 @@ import java.util.Map;
 
 public abstract class Supervisor extends Agent {
     static List<Thesis> proposalList = new LinkedList<>();
+
+    // personal ongoing theses list of supervisor, this may be unnecessary
+    //since now we use Aulaweb to save ONGOING theses
+
     static Map<AID, Thesis> onGoingThesesList = new HashMap<>();
     String[] serviceTypes;
     String[] serviceNames;
@@ -85,7 +89,7 @@ public abstract class Supervisor extends Agent {
                     // todo: Check if the chosen thesis is already in the ON GOING theses list
 
                     // if the chosen title already been picked, send the AVAILABLE proposals so the agent can pick another thesis proposal
-                    if (aulaweb.getONGOING_THESES().containsValue(chosenThesis)){
+                    if (aulaweb.getOnGoingThesesByStudent().containsValue(chosenThesis)){
                         System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] says: Thesis:["+chosenThesis.getThesisTitle()+"] has already been chosen by another agent and informs the Agent:["+receivedMessage.getSender().getLocalName()+"] about the situation.");
 
                         ACLMessage reply = receivedMessage.createReply();
@@ -110,7 +114,7 @@ public abstract class Supervisor extends Agent {
                                 " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
 
                         AID student = chosenThesis.getThesisStudent();
-                        aulaweb.addONGOING_THESES(student,chosenThesis);
+                        aulaweb.addOnGoingThesesByStudent(student,chosenThesis);
                         System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+chosenThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
 
                         // todo: inform thesis committe after registering a thesis as ONGOING
@@ -180,7 +184,7 @@ public abstract class Supervisor extends Agent {
                     //Put the thesis into the on going thesis list
 
                     Aulaweb aulaweb = Aulaweb.getInstance();
-                    aulaweb.addONGOING_THESES(receivedMessage.getSender(),receivedAdHocThesis);
+                    aulaweb.addOnGoingThesesByStudent(receivedMessage.getSender(),receivedAdHocThesis);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] selected itself as the supervisor the Thesis:["+receivedAdHocThesis.getThesisTitle()+"] which will be done by Agent:["+receivedMessage.getSender().getLocalName()+"]");
 //                    System.out.println("\n\n\n\n\n"+aulaweb.getONGOING_THESES()+"\n\n\n\n\n");
 
@@ -259,7 +263,7 @@ public abstract class Supervisor extends Agent {
 
                     // add the thesis into the ON GOING list on Aulaweb
                     assert student != null;
-                    aulaweb.addONGOING_THESES(student, receivedThesis);
+                    aulaweb.addOnGoingThesesByStudent(student, receivedThesis);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] revised the Thesis:["+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+"], and set it to ON_GOING");
                     System.out.println(receivedThesis.getThesisStudent().getLocalName() +"   "+ receivedThesis.getThesisSupervisor().getLocalName());
 

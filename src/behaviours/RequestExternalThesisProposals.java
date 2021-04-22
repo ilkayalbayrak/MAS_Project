@@ -1,6 +1,5 @@
 package behaviours;
 
-//import interfaces.enums.StudentMessageContents;
 import interfaces.enums.ConversationIDs;
 import interfaces.enums.StudentMessageContents;
 import jade.core.AID;
@@ -9,6 +8,10 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import utils.Utils;
 
+
+/*
+* Student behaviour that is for asking company agents for their "EXTERNAL" proposals
+* */
 public class RequestExternalThesisProposals extends OneShotBehaviour {
     public RequestExternalThesisProposals(Agent agent) {
         super(agent);
@@ -36,7 +39,7 @@ public class RequestExternalThesisProposals extends OneShotBehaviour {
             message.setContent(StudentMessageContents.REQUEST_COMPANY_THESIS_PROPOSALS.toString());
             message.setPerformative(ACLMessage.REQUEST);
             message.setConversationId(ConversationIDs.ASK_COMPANY_PROPOSALS.toString());
-            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] sent a request to the companies to see their thesis opportunities.");
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] sent a request to all companies to see their thesis opportunities.");
             myAgent.send(message);
         }else {
             System.out.println("\n[ERROR] There are no agents that offer the given service.");

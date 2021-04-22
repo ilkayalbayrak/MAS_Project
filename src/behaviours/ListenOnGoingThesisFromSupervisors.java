@@ -1,11 +1,9 @@
 package behaviours;
 
-import agents.ThesisCommittee;
 import interfaces.enums.ConversationIDs;
 import interfaces.enums.ServiceTypes;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.Behaviour;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -62,11 +60,7 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
             Aulaweb aulaweb = Aulaweb.getInstance();
             // onGoingRegisteredThesis is a slightly modified version(Added a Reviewer on the previous lines) of a Thesis obj that should be already exist in Aulaweb
             // now we are only updating it to the Reviewer added version
-            if (aulaweb.getONGOING_THESES().containsKey(onGoingRegisteredThesis.getThesisStudent())){
-                aulaweb.addONGOING_THESES(onGoingRegisteredThesis.getThesisStudent(), onGoingRegisteredThesis);
-            }else {
-                System.out.println("[ERROR] Agent:["+onGoingRegisteredThesis.getThesisStudent()+"] does not exist on AULAWEB ONGOING THESES, but it should have.");
-            }
+            aulaweb.updateOnGoingThesesByStudent(onGoingRegisteredThesis.getThesisStudent(), onGoingRegisteredThesis);
 
             // inform reviewer about the thesis
             ACLMessage messageToReviewer = new ACLMessage(ACLMessage.INFORM);
@@ -77,13 +71,17 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] informed the reviewer Agent:["+reviewer[0].getLocalName()+
+                    "] that it was assigned as reviewer for the Thesis:["+onGoingRegisteredThesis.getThesisTitle()+"]");
             myAgent.send(messageToReviewer);
 
             // inform student who is the reviewer
             ACLMessage messageToStudent = new ACLMessage(ACLMessage.INFORM);
             messageToStudent.setConversationId(ConversationIDs.WHO_IS_YOUR_THESIS_REVIEWER.toString());
             messageToStudent.addReceiver(onGoingRegisteredThesis.getThesisStudent());
-            // todo: Do I need to send anything ?? other than the name of the reviewer
+            //
+            //Do I need to send anything ?? other than the name of the reviewer
+            //
             try {
                 messageToStudent.setContentObject(reviewer[0]);
             } catch (IOException e) {
@@ -91,7 +89,8 @@ public class ListenOnGoingThesisFromSupervisors extends CyclicBehaviour {
             }
             myAgent.send(messageToStudent);
 
-            // todo: catch the msg to supervisor and reset the ongoing thesis on supervisor agent
+            // inform the supervisor of the thesis about which agent will be the reviewer
+            // todo: Listen for this message on supervisor but unless you implement the rest of the graduation process schema it's unnecessary
             ACLMessage messageToSupervisor = new ACLMessage(ACLMessage.INFORM);
             messageToSupervisor.setConversationId(ConversationIDs.WHO_IS_YOUR_THESIS_REVIEWER.toString());
             messageToSupervisor.addReceiver(onGoingRegisteredThesis.getThesisSupervisor());

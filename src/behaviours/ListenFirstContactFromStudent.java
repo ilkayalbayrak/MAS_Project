@@ -30,13 +30,13 @@ public class ListenFirstContactFromStudent extends CyclicBehaviour {
         if (receivedMessage != null){
             if (receivedMessage.getContent().equals(StudentMessageContents.FIRST_CONNECTION_WITH_REVIEWER.toString())){
                 Aulaweb aulaweb = Aulaweb.getInstance();
-                thesisToDiscuss = aulaweb.getONGOING_THESES().get(receivedMessage.getSender());
+                thesisToDiscuss = aulaweb.getOnGoingThesesByStudent().get(receivedMessage.getSender());
 
                 // check if the thesis academically sufficient and check if revised by the supervisor
                 // academic worth threshold may be increased to start a different discussion ??
                 if (thesisToDiscuss.isRevisedBySupervisor()){
-                    thesisToDiscuss.setRevisedByReviewer(true);
-                    aulaweb.updateONGOING_THESES(receivedMessage.getSender(), thesisToDiscuss);
+                    thesisToDiscuss.setDiscussedWithReviewer(true);
+                    aulaweb.updateOnGoingThesesByStudent(receivedMessage.getSender(), thesisToDiscuss);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received a thesis discussion request from Agent:["+ receivedMessage.getSender().getLocalName()+
                             "] and performed some revisions on the Thesis:["+thesisToDiscuss.getThesisTitle()+"]");
 
