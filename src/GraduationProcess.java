@@ -4,6 +4,7 @@ import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
+import jade.tools.sniffer.Sniffer;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
@@ -63,6 +64,9 @@ public class GraduationProcess {
             // Start rma as a regular agent instead of using the console
             graduationProcess.rma = mc.createNewAgent("rma", "jade.tools.rma.rma", new Object[0]);
 
+            // Start Sniffer agent
+            graduationProcess.sniffer = mc.createNewAgent("sniffer", "jade.tools.sniffer.Sniffer", null);
+
             // Create student agents
             graduationProcess.student1 = mc.createNewAgent("Student1", Student1.class.getName(), new Object[]{"PROPOSED", "MACHINE_LEARNING"});
             graduationProcess.student2 = mc.createNewAgent("Student2", Student2.class.getName(), new Object[]{"EXTERNAL", "MACHINE_LEARNING"});
@@ -94,6 +98,7 @@ public class GraduationProcess {
 
             // Start agents
             graduationProcess.rma.start();
+            graduationProcess.sniffer.start();
 
             graduationProcess.student1.start();
             graduationProcess.student2.start();
