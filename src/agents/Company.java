@@ -119,7 +119,7 @@ public class Company extends Agent {
         System.out.println(this.getLocalName() + " says: I have served my purpose. Now, time has come to set sail for the Undying Lands.");
     }
 
-    // For the PROPOSED THESIS PATH
+    // For the EXTERNAL THESIS PATH
     // Receive info about which one of supervisor's TH proposals have been chosen by a student agent
     // Remove the chosen proposal from the supervisor's proposal list
     // Put the chosen thesis and student agent's name into the ON_GOING thesis list
@@ -137,7 +137,7 @@ public class Company extends Agent {
                     try {
                         chosenThesis = (Thesis) receivedMessage.getContentObject();
                     } catch (UnreadableException e) {
-                        System.out.println("[ERROR] Agent "+ myAgent.getLocalName()+ " could not extract the proposals object from message");
+                        System.out.println("[ERROR] Agent:["+ myAgent.getLocalName()+ "] could not extract the proposals object from message");
                         e.printStackTrace();
                     }
 
@@ -160,8 +160,8 @@ public class Company extends Agent {
                     } else{
                         // todo: inform student in this part that its chossen thesis in fact was AVAILABLE so it can start with the thesis
                         removeProposal(chosenThesis);
-                        System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesis.getThesisTitle()+
-                                " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available EXTERNAL thesis proposals list.");
+                        System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] removed the Thesis topic:["+ chosenThesis.getThesisTitle()+
+                                "] chosen by Agent:["+ receivedMessage.getSender().getLocalName()+ "] from its available EXTERNAL thesis proposals list.");
 
                         AID student = receivedMessage.getSender();
                         setOnGoingTheses(student,chosenThesis);

@@ -44,7 +44,7 @@ public class ChooseCompanyThesisProposal extends CyclicBehaviour {
 
             proposalsByCompany.put(receivedMessage.getSender(), receivedProposals);
             if(numberOfCompanies == proposalsByCompany.size()){
-                System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" received a reply from all companies that contains thesis proposals.");
+                System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received a reply from all companies that contains thesis proposals.");
 
                 // todo: Fix random picking by creating a gui
 

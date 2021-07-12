@@ -47,7 +47,7 @@ public class ChooseUniThesisProposals extends CyclicBehaviour {
                 if (numberOfSupervisors == proposalsBySupervisors.size()){
 
                     // Print out a msg when all supervisors sent their proposals
-                    System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" received a reply from all supervisors that contains thesis proposals.");
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received a reply from all supervisors that contains thesis proposals.");
 
                     // todo: Fix random picking by creating a gui
                     //randomly pick a supervisor for now

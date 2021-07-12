@@ -77,7 +77,7 @@ public abstract class Supervisor extends Agent {
                     try {
                         chosenThesis = (Thesis) receivedMessage.getContentObject();
                     } catch (UnreadableException e) {
-                        System.out.println("[ERROR] Agent "+ myAgent.getLocalName()+ " could not extract the proposals object from message");
+                        System.out.println("[ERROR] Agent ["+ myAgent.getLocalName()+ "] could not extract the proposals object from message");
                         e.printStackTrace();
                     }
 
@@ -110,14 +110,13 @@ public abstract class Supervisor extends Agent {
                         // add the thesis on the Aulaweb ONGOING THESES list
                         // Then remove the chosen thesis from the personal proposal offerings of the supervisor agent
                         proposalList.remove(chosenThesis);
-                        System.out.println("[INFO] Agent "+myAgent.getLocalName()+" removed the Thesis topic: "+ chosenThesis.getThesisTitle()+
-                                " chosen by Agent: "+ receivedMessage.getSender().getLocalName()+ " from its available thesis proposals list.");
+                        System.out.println("[INFO] Agent: ["+myAgent.getLocalName()+"] removed the Thesis topic: ["+ chosenThesis.getThesisTitle()+
+                                "] chosen by Agent: ["+ receivedMessage.getSender().getLocalName()+ "] from its available thesis proposals list.");
 
                         AID student = chosenThesis.getThesisStudent();
                         aulaweb.addOnGoingThesesByStudent(student,chosenThesis);
-                        System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:"+chosenThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+", and set it to ON_GOING");
+                        System.out.println("[INFO] Agent:"+myAgent.getLocalName()+" revised the Thesis:["+chosenThesis.getThesisTitle()+"] of Agent:["+student.getLocalName()+"], and set it to ON_GOING");
 
-                        // todo: inform thesis committe after registering a thesis as ONGOING
                         AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");
                         if (thesisCommittee != null && thesisCommittee.length > 0){
                             ACLMessage message = new ACLMessage(ACLMessage.INFORM);
@@ -136,7 +135,7 @@ public abstract class Supervisor extends Agent {
                     }
 
                 } else if(receivedMessage.getPerformative() == ACLMessage.REJECT_PROPOSAL){
-                    System.out.println("\n[INFO] "+receivedMessage.getSender().getLocalName()+
+                    System.out.println("[INFO] "+receivedMessage.getSender().getLocalName()+
                             " wants to reject the proposal.");
                     // todo: Send more info about the selected thesis to the student so it can decide to reject or continue with the thesis
                     // todo: if the proposal is rejected then add it back to the proposalList
@@ -172,8 +171,8 @@ public abstract class Supervisor extends Agent {
                 }
                 ACLMessage reply = receivedMessage.createReply();
                 if (receivedAdHocThesis.getAcademicWorth() > 50) {
-                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] accepted AD-HOC thesis proposal of Agent: "+
-                            receivedMessage.getSender().getLocalName());
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] accepted AD-HOC THESIS PROPOSAL:["+receivedAdHocThesis.getThesisTitle()+ "] of Agent:["+
+                            receivedMessage.getSender().getLocalName()+"]");
 
                     // Set the supervisor itself as the supervisor of the adhoc thesis
                     receivedAdHocThesis.setThesisSupervisor(myAgent.getAID());
@@ -186,7 +185,6 @@ public abstract class Supervisor extends Agent {
                     Aulaweb aulaweb = Aulaweb.getInstance();
                     aulaweb.addOnGoingThesesByStudent(receivedMessage.getSender(),receivedAdHocThesis);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] selected itself as the supervisor the Thesis:["+receivedAdHocThesis.getThesisTitle()+"] which will be done by Agent:["+receivedMessage.getSender().getLocalName()+"]");
-//                    System.out.println("\n\n\n\n\n"+aulaweb.getONGOING_THESES()+"\n\n\n\n\n");
 
                     // inform the student that its thesis was accepted
                     reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
@@ -213,12 +211,12 @@ public abstract class Supervisor extends Agent {
 
                 } else {
 
+                    System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] informs the Agent:["+
+                            receivedMessage.getSender().getLocalName()+"] that the AD-HOC THESIS PROPOSAL:["+ receivedAdHocThesis.getThesisTitle() +"] was REJECTED since it was academically insufficient.");
                     reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
                     reply.setConversationId(ConversationIDs.PROPOSE_ADHOC_THESIS_TO_SUPERVISOR.toString());
                     reply.setContent(ProfessorMessageContents.AD_HOC_THESIS_PROPOSAL_REJECTED.toString());
                     myAgent.send(reply);
-                    System.out.println("[INFO] Agent: "+myAgent.getLocalName()+" rejected AD-HOC thesis proposal of Agent: "+
-                            receivedMessage.getSender().getLocalName());
                 }
             }else {
                 block();
@@ -265,7 +263,7 @@ public abstract class Supervisor extends Agent {
                     assert student != null;
                     aulaweb.addOnGoingThesesByStudent(student, receivedThesis);
                     System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] revised the Thesis:["+receivedThesis.getThesisTitle()+" of Agent:"+student.getLocalName()+"], and set it to ON_GOING");
-                    System.out.println(receivedThesis.getThesisStudent().getLocalName() +"   "+ receivedThesis.getThesisSupervisor().getLocalName());
+//                    System.out.println(receivedThesis.getThesisStudent().getLocalName() +"   "+ receivedThesis.getThesisSupervisor().getLocalName());
 
                     // inform thesis committee after registering a thesis as ONGOING
                     AID[] thesisCommittee = Utils.getAgentList(myAgent,"thesis_committee");

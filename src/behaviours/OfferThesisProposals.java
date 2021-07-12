@@ -33,7 +33,7 @@ public class OfferThesisProposals extends CyclicBehaviour {
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
         if (receivedMessage != null) {
-            System.out.println("[INFO] Agent "+myAgent.getLocalName() +" received message from "+receivedMessage.getSender().getName());
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName() +"] received message from Agent:["+receivedMessage.getSender().getName() + "]");
 
             if (receivedMessage.getPerformative() == ACLMessage.REQUEST) {
                 ACLMessage reply = receivedMessage.createReply();
@@ -44,7 +44,7 @@ public class OfferThesisProposals extends CyclicBehaviour {
                     System.out.println("\n[ERROR] Agent:["+ myAgent.getLocalName() +"] Failed to serialize its proposalList object.");
                     e.printStackTrace();
                 }
-                System.out.println("\n[INFO] Agent:[" + myAgent.getLocalName() + "] has sent the list of thesis proposals to Agent:[" + receivedMessage.getSender().getLocalName() + "].");
+                System.out.println("[INFO] Agent:[" + myAgent.getLocalName() + "] has sent the list of thesis proposals to Agent:[" + receivedMessage.getSender().getLocalName() + "].");
                 myAgent.send(reply);
             } else {
                 System.out.println("[ERROR] Agent:["+myAgent.getLocalName()+"] received a request see the thesis proposals but with the WRONG MSG PERFORMATIVE");

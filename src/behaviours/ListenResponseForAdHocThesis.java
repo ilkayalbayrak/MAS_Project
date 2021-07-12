@@ -37,10 +37,10 @@ public class ListenResponseForAdHocThesis extends CyclicBehaviour {
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
         if (receivedMessage != null){
             if (receivedMessage.getPerformative() == ACLMessage.ACCEPT_PROPOSAL){
-                System.out.println("[INFO] AD-HOC PROPOSAL of Agent:"+myAgent.getLocalName()+" accepted by Agent:["+receivedMessage.getSender().getLocalName()+"]");
+                System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received a message from Agent:["+receivedMessage.getSender().getLocalName()+"] with the information AD-HOC PROPOSAL ACCEPTED ");
 
             } else if (receivedMessage.getPerformative() == ACLMessage.REJECT_PROPOSAL){
-                System.out.println("[INFO] AD-HOC PROPOSAL of Agent:"+myAgent.getLocalName()+" rejected by Agent:["+receivedMessage.getSender().getLocalName()+"], because the proposal has been found academically insufficient");
+                System.out.println("[INFO] Agent:["+myAgent.getLocalName()+"] received a message from Agent:["+receivedMessage.getSender().getLocalName()+"] with the information AD-HOC PROPOSAL REJECTED because the proposal was academically insufficient");
 
                 // Randomly choose between;
                 // - increasing the academical sufficiency of the AD_HOC thesis
