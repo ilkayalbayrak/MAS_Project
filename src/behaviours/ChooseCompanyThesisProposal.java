@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.*;
 
+/*
+ * A Student behaviour to choose a thesis among all the sent proposals by the Companies
+ * */
 public class ChooseCompanyThesisProposal extends CyclicBehaviour {
     private Map<AID, List<Thesis>> proposalsByCompany = new HashMap<>();
     private List<Thesis> receivedProposals = new LinkedList<>();

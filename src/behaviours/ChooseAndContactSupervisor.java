@@ -13,6 +13,10 @@ import utils.Utils;
 import java.io.IOException;
 import java.security.spec.RSAOtherPrimeInfo;
 
+/*
+* A Student behavior to search and contact a supervisor in order to
+* do an AD HOC thesis with them
+* */
 public class ChooseAndContactSupervisor extends OneShotBehaviour {
     private String researchInterest;
     private Thesis adhocThesis;

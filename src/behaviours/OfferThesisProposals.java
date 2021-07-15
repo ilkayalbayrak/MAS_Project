@@ -33,7 +33,7 @@ public class OfferThesisProposals extends CyclicBehaviour {
         ACLMessage receivedMessage = myAgent.receive(messageTemplate);
 
         if (receivedMessage != null) {
-            System.out.println("[INFO] Agent:["+myAgent.getLocalName() +"] received message from Agent:["+receivedMessage.getSender().getName() + "]");
+            System.out.println("[INFO] Agent:["+myAgent.getLocalName() +"] received a request message to see the available thesis proposals from Agent:["+receivedMessage.getSender().getName() + "]");
 
             if (receivedMessage.getPerformative() == ACLMessage.REQUEST) {
                 ACLMessage reply = receivedMessage.createReply();

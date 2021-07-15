@@ -13,6 +13,9 @@ import utils.Utils;
 import java.io.IOException;
 import java.util.*;
 
+/*
+* A Student behaviour to choose a thesis among all the sent proposals by the Supervisors
+* */
 public class ChooseUniThesisProposals extends CyclicBehaviour {
     private Map<AID, List<Thesis>> proposalsBySupervisors = new HashMap<>();
     private List<Thesis> receivedProposals = new LinkedList<>();

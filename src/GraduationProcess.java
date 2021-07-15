@@ -65,7 +65,7 @@ public class GraduationProcess {
             graduationProcess.rma = mc.createNewAgent("rma", "jade.tools.rma.rma", new Object[0]);
 
             // Start Sniffer agent
-            graduationProcess.sniffer = mc.createNewAgent("sniffer", "jade.tools.sniffer.Sniffer", null);
+//            graduationProcess.sniffer = mc.createNewAgent("sniffer", "jade.tools.sniffer.Sniffer", null);
 
             // Create student agents
             graduationProcess.student1 = mc.createNewAgent("Student1", Student1.class.getName(), new Object[]{"PROPOSED", "MACHINE_LEARNING"});
@@ -98,7 +98,7 @@ public class GraduationProcess {
 
             // Start agents
             graduationProcess.rma.start();
-            graduationProcess.sniffer.start();
+//            graduationProcess.sniffer.start();
 
             graduationProcess.student1.start();
             graduationProcess.student2.start();
@@ -112,15 +112,15 @@ public class GraduationProcess {
             graduationProcess.supervisor4.start();
             graduationProcess.supervisor5.start();
 
+            graduationProcess.company.start();
+            graduationProcess.thesisCommittee.start();
+
             graduationProcess.reviewer1.start();
             graduationProcess.reviewer2.start();
             graduationProcess.reviewer3.start();
             graduationProcess.reviewer4.start();
             graduationProcess.reviewer5.start();
 
-            graduationProcess.thesisCommittee.start();
-
-            graduationProcess.company.start();
 
         } catch (StaleProxyException e) {
             e.printStackTrace();
